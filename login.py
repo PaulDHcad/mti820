@@ -38,36 +38,36 @@ def check_credentials(username, password):
     return False
 
 # Add a title
-st.title("Login or Sign Up")
+st.title("Se connecter ou s'inscrire")
 
 # Add radio buttons to select login or sign up
-choice = st.radio("Select an action", ("Login", "Sign Up"))
+choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
 
 # If the user selects sign up
-if choice == "Sign Up":
+if choice == "S'inscrire":
     # Add user input fields for username, password, and email
-    new_username = st.text_input("New Username")
-    new_password = st.text_input("New Password", type="password")
-    new_email = st.text_input("Email")
+    new_username = st.text_input("Nom d'utilisateur")
+    new_password = st.text_input("Mot de passe", type="password")
+    new_email = st.text_input("Adresse courriel")
 
     # Add a button to submit the sign up information
-    if st.button("Sign Up"):
+    if st.button("S'inscrire"):
         if username_exists(new_username):
-            st.error("Username already taken")
+            st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
         else:
             add_user(new_username, new_password, new_email)
-            st.success("Successfully signed up")
+            st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
-elif choice == "Login":
+elif choice == "Se connecter":
     # Add user input fields for username and password
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    username = st.text_input("Nom d'utilisateur")
+    password = st.text_input("Mot de passe", type="password")
 
     # Add a button to submit the login credentials
-    if st.button("Login"):
+    if st.button("Se connecter"):
         if check_credentials(username, password):
-            st.success("Logged in as {}".format(username))
+            st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
         else:
-            st.error("Incorrect username or password")
+            st.error("Nom d'utilisateur ou mot de passe inccorect(s).")
