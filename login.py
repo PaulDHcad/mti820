@@ -51,7 +51,7 @@ def retreive_userdata(username) :
     with open(USER_STORAGE_FILE, 'r') as f:
         for line in f:
             stored_username, _, stored_email, stored_location = line.strip().split(',')
-            if username == stored_username
+            if username == stored_username:
                 return (stored_username, stored_email, stored_location)
     return False
 
