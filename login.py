@@ -70,4 +70,4 @@ elif choice == "Se connecter":
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
         else:
-            st.error("Nom d'utilisateur ou mot de passe inccorect(s).")
+            st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
