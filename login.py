@@ -59,9 +59,9 @@ if choice == "S'inscrire":
         else:
             if email_exists(new_email):
                 st.error("Cette adresse courriel est déjà associée à un compte.")
-              else:
-                   add_user(new_username, new_password, new_email)
-                   st.success("Inscription effectuée avec succès.")
+            else: 
+                add_user(new_username, new_password, new_email)
+                st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
 elif choice == "Se connecter":
