@@ -41,7 +41,7 @@ def add_user(username, password, email, location):
 def check_credentials(username, password):
     with open(USER_STORAGE_FILE, 'r') as f:
         for line in f:
-            stored_username, stored_password, _ = line.strip().split(',')
+            stored_username, stored_password, _, _ = line.strip().split(',')
             if username == stored_username and hash_password(password) == stored_password:
                 return True
     return False
