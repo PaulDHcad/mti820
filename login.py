@@ -18,15 +18,24 @@ def hash_password(password):
 def username_exists(username):
     with open(USER_STORAGE_FILE, 'r') as f:
         for line in f:
-            stored_username, _, _ = line.strip().split(',')
+            stored_username, _, _, _ = line.strip().split(',')
             if username == stored_username:
                 return True
     return False
 
+# Define a function to check if a email is already used in the user storage file
+def email_exists(email):
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            _, _, stored_email, _ = line.strip().split(',')
+            if email == stored_email:
+                return True
+    return False
+
 # Define a function to add a new user to the user storage file
-def add_user(username, password, email):
+def add_user(username, password, email, location):
     with open(USER_STORAGE_FILE, 'a') as f:
-        f.write('{},{},{}\n'.format(username, hash_password(password), email))
+        f.write('{},{},{},{}\n'.format(username, hash_password(password), email, location))
 
 # Define a function to check if the login credentials are correct
 def check_credentials(username, password):
