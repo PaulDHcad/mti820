@@ -1,11 +1,41 @@
 import streamlit as st
+import hashlib
+import os
 
-# Define the correct username and password for login
-CORRECT_USERNAME = 'myusername'
-CORRECT_PASSWORD = 'mypassword'
+# Define the path to the user storage file
+USER_STORAGE_FILE = 'users.txt'
 
-# Define an empty dictionary to store user information
-user_info = {}
+# If the user storage file doesn't exist, create an empty file
+if not os.path.isfile(USER_STORAGE_FILE):
+    with open(USER_STORAGE_FILE, 'w') as f:
+        pass
+
+# Define a function to hash the password
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Define a function to check if a username exists in the user storage file
+def username_exists(username):
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            stored_username, _, _ = line.strip().split(',')
+            if username == stored_username:
+                return True
+    return False
+
+# Define a function to add a new user to the user storage file
+def add_user(username, password, email):
+    with open(USER_STORAGE_FILE, 'a') as f:
+        f.write('{},{},{}\n'.format(username, hash_password(password), email))
+
+# Define a function to check if the login credentials are correct
+def check_credentials(username, password):
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            stored_username, stored_password, _ = line.strip().split(',')
+            if username == stored_username and hash_password(password) == stored_password:
+                return True
+    return False
 
 # Add a title
 st.title("Login or Sign Up")
@@ -22,10 +52,10 @@ if choice == "Sign Up":
 
     # Add a button to submit the sign up information
     if st.button("Sign Up"):
-        if new_username in user_info:
+        if username_exists(new_username):
             st.error("Username already taken")
         else:
-            user_info[new_username] = {'password': new_password, 'email': new_email}
+            add_user(new_username, new_password, new_email)
             st.success("Successfully signed up")
 
 # If the user selects login
@@ -36,11 +66,8 @@ elif choice == "Login":
 
     # Add a button to submit the login credentials
     if st.button("Login"):
-        if username in user_info:
-            if password == user_info[username]['password']:
-                st.success("Logged in as {}".format(username))
-                # Add the rest of your application logic here
-            else:
-                st.error("Incorrect password")
+        if check_credentials(username, password):
+            st.success("Logged in as {}".format(username))
+            # Add the rest of your application logic here
         else:
-            st.error("User does not exist")
+            st.error("Incorrect username or password")
