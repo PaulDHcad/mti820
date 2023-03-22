@@ -56,12 +56,12 @@ if choice == "S'inscrire":
         if username_exists(new_username):
             st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
 
-        else:
-            if email_exists(new_email):
-                st.error("Cette adresse courriel est déjà associée à un compte.")
-            else: 
-                add_user(new_username, new_password, new_email)
-                st.success("Inscription effectuée avec succès.")
+#        else:
+#            if email_exists(new_email):
+#                st.error("Cette adresse courriel est déjà associée à un compte.")
+        else: 
+            add_user(new_username, new_password, new_email, new_location)
+            st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
 elif choice == "Se connecter":
@@ -74,5 +74,6 @@ elif choice == "Se connecter":
         if check_credentials(username, password):
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
+            st.text("Votre localisation :" & location)
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
