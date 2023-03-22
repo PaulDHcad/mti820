@@ -46,6 +46,15 @@ def check_credentials(username, password):
                 return True
     return False
 
+# Define a function to retreive user data
+def retreive_userdata(username) :
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            stored_username, _, stored_email, stored_location = line.strip().split(',')
+            if username == stored_username
+                return (stored_username, stored_email, stored_location)
+    return False
+
 # Add a title
 st.title("Se connecter ou s'inscrire")
 
@@ -83,6 +92,7 @@ elif choice == "Se connecter":
         if check_credentials(username, password):
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
-            st.text("Votre localisation :" )
+            userdata = retreive_userdata(username)
+            st.text("Votre localisation :" & userdata[2])
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
