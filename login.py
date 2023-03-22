@@ -37,37 +37,43 @@ def check_credentials(username, password):
                 return True
     return False
 
-# Add a title
-st.title("Login or Sign Up")
+# Define a function to get the user's email
+def get_user_email(username):
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            stored_username, _, stored_email = line.strip().split(',')
+            if username == stored_username:
+                return stored_email
+    return None
 
-# Add radio buttons to select login or sign up
-choice = st.radio("Select an action", ("Login", "Sign Up"))
+# Add a title to the app
+st.title("Welcome to the Login/Sign Up Page")
 
-# If the user selects sign up
-if choice == "Sign Up":
-    # Add user input fields for username, password, and email
-    new_username = st.text_input("New Username")
-    new_password = st.text_input("New Password", type="password")
-    new_email = st.text_input("Email")
-
-    # Add a button to submit the sign up information
-    if st.button("Sign Up"):
-        if username_exists(new_username):
-            st.error("Username already taken")
-        else:
-            add_user(new_username, new_password, new_email)
-            st.success("Successfully signed up")
-
-# If the user selects login
-elif choice == "Login":
+# Add two buttons to the landing page for login and sign up
+if st.button("Login"):
     # Add user input fields for username and password
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
     # Add a button to submit the login credentials
-    if st.button("Login"):
+    if st.button("Submit"):
         if check_credentials(username, password):
             st.success("Logged in as {}".format(username))
-            # Add the rest of your application logic here
+            st.write("Your email is:", get_user_email(username))
         else:
             st.error("Incorrect username or password")
+
+if st.button("Sign Up"):
+    # Add user input fields for username, password, and email
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    email = st.text_input("Email")
+
+    # Add a button to submit the sign up information
+    if st.button("Submit"):
+        if username_exists(username):
+            st.error("Username already taken")
+        else:
+            add_user(username, password, email)
+            st.success("Successfully signed up")
+
