@@ -47,7 +47,7 @@ def get_user_email(username):
     return None
 
 # Add a title to the app
-st.title("Welcome to the Login/Sign Up Page")
+st.title("Welcome")
 
 # Add two buttons to the landing page for login and sign up
 if st.button("Login"):
@@ -68,6 +68,7 @@ if st.button("Sign Up"):
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     email = st.text_input("Email")
+    localization = st.text_input("Country")
 
     # Add a button to submit the sign up information
     if st.button("Submit"):
