@@ -54,6 +54,8 @@ if choice == "S'inscrire":
     if st.button("S'inscrire"):
         if username_exists(new_username):
             st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+        if email_exists(new_email):
+            st.error("Cette adresse courriel est déjà associée à un compte.")
         else:
             add_user(new_username, new_password, new_email)
             st.success("Inscription effectuée avec succès.")
