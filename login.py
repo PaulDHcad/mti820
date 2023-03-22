@@ -74,6 +74,6 @@ elif choice == "Se connecter":
         if check_credentials(username, password):
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
-            st.text("Votre localisation :" & location)
+            st.text("Votre localisation :")
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
