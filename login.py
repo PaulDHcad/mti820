@@ -93,6 +93,6 @@ elif choice == "Se connecter":
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
             userdata = retreive_userdata(username)
-            st.text("Votre localisation :", userdata(2))
+            st.text("Votre localisation :", userdata)
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
