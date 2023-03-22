@@ -18,56 +18,72 @@ def hash_password(password):
 def username_exists(username):
     with open(USER_STORAGE_FILE, 'r') as f:
         for line in f:
-            stored_username, _, _ = line.strip().split(',')
+            stored_username, _, _, _ = line.strip().split(',')
             if username == stored_username:
                 return True
     return False
 
 # Define a function to add a new user to the user storage file
-def add_user(username, password, email):
+def add_user(username, password, email, location):
     with open(USER_STORAGE_FILE, 'a') as f:
-        f.write('{},{},{}\n'.format(username, hash_password(password), email))
+        f.write('{},{},{},{}\n'.format(username, hash_password(password), email, location))
 
 # Define a function to check if the login credentials are correct
 def check_credentials(username, password):
     with open(USER_STORAGE_FILE, 'r') as f:
         for line in f:
-            stored_username, stored_password, _ = line.strip().split(',')
+            stored_username, stored_password, _, _ = line.strip().split(',')
             if username == stored_username and hash_password(password) == stored_password:
                 return True
     return False
 
+# Define a function to get the user's location
+def get_user_location(username):
+    with open(USER_STORAGE_FILE, 'r') as f:
+        for line in f:
+            stored_username, _, _, location = line.strip().split(',')
+            if username == stored_username:
+                return location
+    return None
+
 # Add a title
 st.title("Login or Sign Up")
+
+# Add user input fields for username, password, email, and location
+username = st.text_input("Username")
+password = st.text_input("Password", type="password")
+email = st.text_input("Email")
+location = st.text_input("Location")
 
 # Add radio buttons to select login or sign up
 choice = st.radio("Select an action", ("Login", "Sign Up"))
 
 # If the user selects sign up
 if choice == "Sign Up":
-    # Add user input fields for username, password, and email
-    new_username = st.text_input("New Username")
-    new_password = st.text_input("New Password", type="password")
-    new_email = st.text_input("Email")
-
     # Add a button to submit the sign up information
     if st.button("Sign Up"):
-        if username_exists(new_username):
+        if username_exists(username):
             st.error("Username already taken")
         else:
-            add_user(new_username, new_password, new_email)
+            add_user(username, password, email, location)
             st.success("Successfully signed up")
 
 # If the user selects login
 elif choice == "Login":
-    # Add user input fields for username and password
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
     # Add a button to submit the login credentials
     if st.button("Login"):
         if check_credentials(username, password):
             st.success("Logged in as {}".format(username))
-            # Add the rest of your application logic here
-        else:
-            st.error("Incorrect username or password")
+
+            # If this is the user's first login, ask for movie type preferences
+            if get_user_location(username) is None:
+                st.info("Please select your preferred movie types")
+                movie_types = st.multiselect("Select one or more movie types", ["Action", "Comedy", "Drama", "Horror"])
+                if len(movie_types) > 0:
+                    st.success("Movie types saved")
+                    # Add the user's location and movie type preferences to the user storage file
+                    with open(USER_STORAGE_FILE, 'r') as f:
+                        lines = f.readlines()
+                    with open(USER_STORAGE_FILE, 'w') as f:
+                        for line in lines:
+                            stored_username, stored_password, stored_email,
