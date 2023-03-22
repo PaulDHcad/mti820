@@ -49,16 +49,19 @@ if choice == "S'inscrire":
     new_username = st.text_input("Nom d'utilisateur")
     new_password = st.text_input("Mot de passe", type="password")
     new_email = st.text_input("Adresse courriel")
+    new_location = st.text_input("Pays")
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
         if username_exists(new_username):
             st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
-        if email_exists(new_email):
-            st.error("Cette adresse courriel est déjà associée à un compte.")
+
         else:
-            add_user(new_username, new_password, new_email)
-            st.success("Inscription effectuée avec succès.")
+            if email_exists(new_email):
+                st.error("Cette adresse courriel est déjà associée à un compte.")
+              else:
+                   add_user(new_username, new_password, new_email)
+                   st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
 elif choice == "Se connecter":
