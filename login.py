@@ -87,10 +87,13 @@ choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
 # If the user selects sign up
 if choice == "S'inscrire":
     # Add user input fields for username, password, and email
+    new_name = st.text_input("Prénom")
+    new_surname = st.text_input("Nom")
     new_username = st.text_input("Nom d'utilisateur")
     new_password = st.text_input("Mot de passe", type="password")
     new_email = st.text_input("Adresse courriel")
     new_location = st.text_input("Pays")
+    new_birthyear = st.text_input("Année de naissance")
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
@@ -115,10 +118,13 @@ elif choice == "Se connecter":
         if check_credentials(username, password):
             st.success("Connecté en temps que {}".format(username))
             # Add the rest of your application logic here
-            userdata = retreive_userdata(username)
+            userdata = get_user_details(username)
             st.title("Vos informations")
-            st.write("Votre nom d'utilisateur :", userdata[0])
-            st.write("Votre adresse courriel :", userdata[1])
-            st.write("Votre localisation :", userdata[2])
+            st.write("Votre prénom :", userdata[1])
+            st.write("Votre nom :", userdata[2])
+            st.write("Votre nom d'utilisateur :", userdata[3])
+            st.write("Votre adresse courriel :", userdata[6])
+            st.write("Votre localisation :", userdata[4])
+            st.write("Votre année de naissance :", userdata[8])
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
