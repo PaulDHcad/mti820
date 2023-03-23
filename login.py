@@ -103,23 +103,23 @@ if choice == "S'inscrire":
                      
         else:
             if new_surname=="":
-            st.error('Le champ "Nom" est vide.')
+                st.error('Le champ "Nom" est vide.')
                      
             else:
                 if new_username=="":
-                st.error('Le champ "Nom d',"'",'utilisateur" est vide.')
+                    st.error('Le champ "Nom d',"'",'utilisateur" est vide.')
                      
                 else:
                     if new_password=="":
-                    st.error('Le champ "Mot de passe" est vide.')
+                        st.error('Le champ "Mot de passe" est vide.')
                      
                     else:
                         if new_location=="":
-                        st.error('Le champ "Adresse courriel" est vide.')
+                            st.error('Le champ "Adresse courriel" est vide.')
                      
                         else:
                             if new_username=="-- Sélectionner un pays parmi la liste --":
-                            st.error('Veuillez choisir un pays parmi la liste dans le champ "Pays"')
+                                st.error('Veuillez choisir un pays parmi la liste dans le champ "Pays"')
                      
                             else:
                                 if username_exists(new_username):
