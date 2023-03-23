@@ -89,8 +89,8 @@ choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
 if choice == "S'inscrire":
     # Add user input fields for username, password, and email
     new_name = st.text_input("Prénom", "")
-    new_surname = st.text_input("Nom". "")
-    new_username = st.text_input("Nom d'utilisateur". "")
+    new_surname = st.text_input("Nom", "")
+    new_username = st.text_input("Nom d'utilisateur", "")
     new_password = st.text_input("Mot de passe", "", type="password")
     new_email = st.text_input("Adresse courriel", "")
     new_location = st.selectbox("Select a country", Countries)
