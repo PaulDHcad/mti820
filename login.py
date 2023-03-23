@@ -5,6 +5,7 @@ import os
 import random
 
 # Define the path to the user storage file
+Countries = ["Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie saoudite", "Argentine", "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Bélarus", "Belgique", "Belize", "Bénin", "Bhoutan", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo, République démocratique du", "Congo, République du", "Corée du Nord", "Corée du Sud", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "République dominicaine", "Égypte", "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "États-Unis", "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", "Honduras", "Hongrie", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", "Liberia", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Îles Marshall", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Niue", "Norvège", "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Christophe-et-Niévès", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", "Salomon, Îles", "Salvador", "Samoa", "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Swaziland", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "République tchèque", "Thaïlande", "Timor-Leste", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican, cité du", "Venezuela", "Viêt Nam", "Yémen", "Zambie", "Zimbabwe"]
 USER_STORAGE_FILE = 'users.csv'
 # If the user storage file doesn't exist, create an empty file
 if not os.path.isfile(USER_STORAGE_FILE):
@@ -87,13 +88,13 @@ choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
 # If the user selects sign up
 if choice == "S'inscrire":
     # Add user input fields for username, password, and email
-    new_name = st.text_input("Prénom")
-    new_surname = st.text_input("Nom")
-    new_username = st.text_input("Nom d'utilisateur")
-    new_password = st.text_input("Mot de passe", type="password")
-    new_email = st.text_input("Adresse courriel")
-    new_location = st.text_input("Pays")
-    new_birthyear = st.text_input("Année de naissance")
+    new_name = st.text_input("Prénom", "")
+    new_surname = st.text_input("Nom". "")
+    new_username = st.text_input("Nom d'utilisateur". "")
+    new_password = st.text_input("Mot de passe", "", type="password")
+    new_email = st.text_input("Adresse courriel", "")
+    new_location = st.selectbox("Select a country", Countries)
+    new_birthyear = st.num_input("Année de naissance", value=0, step=1)
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
