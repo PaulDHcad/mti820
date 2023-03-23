@@ -94,7 +94,7 @@ if choice == "S'inscrire":
     new_password = st.text_input("Mot de passe", "", type="password")
     new_email = st.text_input("Adresse courriel", "")
     new_location = st.selectbox("Select a country", Countries)
-    new_birthyear = st.num_input("Année de naissance", value=0, step=1)
+    new_birthyear = st.number_input("Année de naissance", value=0, step=1)
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
@@ -107,13 +107,6 @@ if choice == "S'inscrire":
             else: 
                 add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
                 st.success("Inscription effectuée avec succès.")
-                new_name = ""
-                new_surname = ""
-                new_username = ""
-                new_password = ""
-                new_email = ""
-                new_location = ""
-                new_birthyear = ""
 
 # If the user selects login
 elif choice == "Se connecter":
