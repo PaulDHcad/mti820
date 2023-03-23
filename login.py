@@ -101,16 +101,36 @@ if choice == "S'inscrire":
         if new_name=="":
             st.error('Le champ "Prénom" est vide.')
                      
-        else :
-            if username_exists(new_username):
-                st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
-
+        else:
+            if new_surname=="":
+            st.error('Le champ "Nom" est vide.')
+                     
             else:
-                if email_exists(new_email):
-                    st.error("Cette adresse courriel est déjà associée à un compte.")
-                else: 
-                    add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
-                    st.success("Inscription effectuée avec succès.")
+                if new_username=="":
+                st.error('Le champ "Nom d',"'",'utilisateur" est vide.')
+                     
+                else:
+                    if new_password=="":
+                    st.error('Le champ "Mot de passe" est vide.')
+                     
+                    else:
+                        if new_location=="":
+                        st.error('Le champ "Adresse courriel" est vide.')
+                     
+                        else:
+                            if new_username=="-- Sélectionner un pays parmi la liste --":
+                            st.error('Veuillez choisir un pays parmi la liste dans le champ "Pays"')
+                     
+                            else:
+                                if username_exists(new_username):
+                                    st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+
+                                else:
+                                    if email_exists(new_email):
+                                        st.error("Cette adresse courriel est déjà associée à un compte.")
+                                    else: 
+                                        add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
+                                        st.success("Inscription effectuée avec succès.")
                 
 # If the user selects login
 elif choice == "Se connecter":
