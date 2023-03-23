@@ -30,6 +30,7 @@ def new_id() :
     while True:
         id_number = random.randint(100000, 999999)
         if not id_number_exists(id_number):
+            break
     return id_number
                          
 # Define a function to check if a username exists in the user storage file
