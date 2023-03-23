@@ -114,11 +114,11 @@ if choice == "S'inscrire":
                         st.error('Le champ Mot de passe est vide.')
                      
                     else:
-                        if new_location=="":
+                        if new_email=="":
                             st.error('Le champ Adresse courriel est vide.')
                      
                         else:
-                            if new_username=="-- Sélectionner un pays parmi la liste --":
+                            if new_location=="-- Sélectionner un pays parmi la liste --":
                                 st.error('Veuillez choisir un pays parmi la liste dans le champ Pays')
                      
                             else:
