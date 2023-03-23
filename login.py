@@ -106,6 +106,13 @@ if choice == "S'inscrire":
             else: 
                 add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
                 st.success("Inscription effectuée avec succès.")
+                new_name = ""
+                new_surname = ""
+                new_username = ""
+                new_password = ""
+                new_email = ""
+                new_location = ""
+                new_birthyear = ""
 
 # If the user selects login
 elif choice == "Se connecter":
