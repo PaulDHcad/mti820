@@ -99,7 +99,7 @@ if choice == "S'inscrire":
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
         if new_name=="":
-            st.error('Le champ "Prénom" est vide.")
+            st.error('Le champ "Prénom" est vide.')
                      
         else :
             if username_exists(new_username):
