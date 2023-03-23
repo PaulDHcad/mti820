@@ -10,7 +10,7 @@ USER_STORAGE_FILE = 'users.csv'
 if not os.path.isfile(USER_STORAGE_FILE):
     with open(USER_STORAGE_FILE, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "name", "surname", "username", "location", "password", "email", "idfavoritegenre", "birthyear])
+        writer.writerow(["id", "name", "surname", "username", "location", "password", "email", "idfavoritegenre", "birthyear"])
 
 # Define a function to hash the password
 def hash_password(password):
