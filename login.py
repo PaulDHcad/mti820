@@ -98,16 +98,42 @@ if choice == "S'inscrire":
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
-        if new_name=="" or new_surname=="" or new_username=="" or new_password=="" or new_email=="" or new_location=="-- Sélectionner un pays parmi la liste --" or new_birthyear<1900 or new_birthyear>2023:
-            if username_exists(new_username):
-                st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
-
-            else:
-                if email_exists(new_email):
-                    st.error("Cette adresse courriel est déjà associée à un compte.")
-                else: 
-                    add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
-                    st.success("Inscription effectuée avec succès.")
+        if new_name=="" :
+            st.error('Veuillez indiquer un prénom dans le champ "Prénom".')
+            break
+            else :
+                if new_surname=="" :
+                    st.error('Veuillez indiquer un nom dans le champ "Nom".')
+                    break
+                    else:
+                        if new_username=="" :
+                            st.error("Veuillez indiquer un nom d","'","utilisateur dans le champ",'"Nom d',"'",'utilisateur".')
+                            break
+                            else:
+                                if new_password=="" :
+                                    st.error('Veuillez indiquer un mot de passe dans le champ "Mot de passe".')
+                                    break
+                                    else:
+                                        if new_email=="" : 
+                                            st.error('Veuillez indiquer une adresse courriel dans le champ "Courriel.')
+                                            break
+                                            else:
+                                                if new_location=="-- Sélectionner un pays parmi la liste --" :
+                                                    st.error('Veuillez choisir un pays dans le champ "Pays".')
+                                                    break
+                                                    else:
+                                                        if new_birthyear<1900 or new_birthyear>2023:
+                                                            st.error('Veuillez choisir une année de naissance possible dans le champ "Date de naissance".')
+                                                            break
+                                                            else :
+                                                                if username_exists(new_username):
+                                                                    st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+                                                                    else:
+                                                                        if email_exists(new_email):
+                                                                            st.error("Cette adresse courriel est déjà associée à un compte.")
+                                                                            else: 
+                                                                                add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
+                                                                                st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
 elif choice == "Se connecter":
