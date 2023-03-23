@@ -96,17 +96,21 @@ if choice == "S'inscrire":
     new_location = st.selectbox("Select a country", Countries)
     new_birthyear = st.number_input("Année de naissance", value=2000, step=1, min_value=1900, max_value=2023)
 
-        # Add a button to submit the sign up information
+    # Add a button to submit the sign up information
     if st.button("S'inscrire"):
-        if username_exists(new_username):
-            st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+        if new_name=="":
+            st.error('Le champ "Prénom" est vide.")
+                     
+        else :
+            if username_exists(new_username):
+                st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
 
-        else:
-            if email_exists(new_email):
-                st.error("Cette adresse courriel est déjà associée à un compte.")
-            else: 
-                add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
-                st.success("Inscription effectuée avec succès.")
+            else:
+                if email_exists(new_email):
+                    st.error("Cette adresse courriel est déjà associée à un compte.")
+                else: 
+                    add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
+                    st.success("Inscription effectuée avec succès.")
                 
 # If the user selects login
 elif choice == "Se connecter":
