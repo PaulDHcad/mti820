@@ -121,6 +121,7 @@ elif choice == "Se connecter":
             # Add the rest of your application logic here
             userdata = get_user_details(username)
             st.title("Vos informations")
+            st.write("Votre ID :", userdata[0])
             st.write("Votre prénom :", userdata[1])
             st.write("Votre nom :", userdata[2])
             st.write("Votre nom d'utilisateur :", userdata[3])
