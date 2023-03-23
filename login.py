@@ -98,15 +98,16 @@ if choice == "S'inscrire":
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
-        if username_exists(new_username):
-            st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+        if new_name=="" or new_surname=="" or new_username=="" or new_password=="" or new_email=="" or new_location=="-- Sélectionner un pays parmi la liste --" or new_birthyear<1900 or new_birthyear>2023:
+            if username_exists(new_username):
+                st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
 
-        else:
-            if email_exists(new_email):
-                st.error("Cette adresse courriel est déjà associée à un compte.")
-            else: 
-                add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
-                st.success("Inscription effectuée avec succès.")
+            else:
+                if email_exists(new_email):
+                    st.error("Cette adresse courriel est déjà associée à un compte.")
+                else: 
+                    add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
+                    st.success("Inscription effectuée avec succès.")
 
 # If the user selects login
 elif choice == "Se connecter":
