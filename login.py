@@ -122,7 +122,7 @@ if choice == "S'inscrire":
                                 st.error('Veuillez choisir un pays parmi la liste dans le champ Pays')
                      
                             else:
-                                if new_birthdate < 1900 or new_birthdate > 2023:
+                                if new_birthyear=="" or new_birthyear < 1900 or new_birthyear > 2023:
                                     st.error('Veuillez entrer une année correcte dans le champ Année de naissance')
                      
                                 else:
