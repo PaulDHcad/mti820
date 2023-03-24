@@ -94,7 +94,7 @@ if choice == "S'inscrire":
     new_password = st.text_input("Mot de passe", "", type="password")
     new_email = st.text_input("Adresse courriel", "")
     new_location = st.selectbox("Select a country", Countries)
-    new_birthyear = st.number_input("Année de naissance", value=2000, step=1, min_value=1900, max_value=2023)
+    new_birthyear = st.number_input("Année de naissance", value=2000, step=1)
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
@@ -122,7 +122,7 @@ if choice == "S'inscrire":
                                 st.error('Veuillez choisir un pays parmi la liste dans le champ Pays')
                      
                             else:
-                                if float(new_birthdate) < 1900 or float(new_birthdate) > 2023:
+                                if new_birthdate < 1900 or new_birthdate > 2023:
                                     st.error('Veuillez entrer une année correcte dans le champ Année de naissance')
                      
                                 else:
