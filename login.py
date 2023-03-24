@@ -88,52 +88,52 @@ choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
 # If the user selects sign up
 if choice == "S'inscrire":
     # Add user input fields for username, password, and email
-    new_name = st.text_input("Prénom", value="")
-    new_surname = st.text_input("Nom", value="")
-    new_username = st.text_input("Nom d'utilisateur", value="")
-    new_password = st.text_input("Mot de passe", value="", type="password")
-    new_email = st.text_input("Adresse courriel", value="")
-    new_location = st.selectbox("Select a country", Countries)
-    new_birthyear = st.number_input("Année de naissance", value=2000, step=1)
+    input_name = st.text_input("Prénom", value="")
+    input_surname = st.text_input("Nom", value="")
+    input_username = st.text_input("Nouveau nom d'utilisateur", value="")
+    input_password = st.text_input("Nouveau mot de passe", value="", type="password")
+    input_email = st.text_input("Adresse courriel", value="")
+    input_location = st.selectbox("Select a country", Countries)
+    input_birthyear = st.number_input("Année de naissance", value=2000, step=1)
 
     # Add a button to submit the sign up information
     if st.button("S'inscrire"):
-        if new_name=="":
+        if input_name=="":
             st.error('Le champ Prénom est vide.')
                      
         else:
-            if new_surname=="":
+            if input_surname=="":
                 st.error('Le champ Nom est vide.')
                      
             else:
-                if new_username=="":
+                if input_username=="":
                     st.error("Le champ Nom d'utilisateur est vide.")
                      
                 else:
-                    if new_password=="":
+                    if input_password=="":
                         st.error('Le champ Mot de passe est vide.')
                      
                     else:
-                        if new_email=="":
+                        if input_email=="":
                             st.error('Le champ Adresse courriel est vide.')
                      
                         else:
-                            if new_location=="-- Sélectionner un pays parmi la liste --":
+                            if input_location=="-- Sélectionner un pays parmi la liste --":
                                 st.error('Veuillez choisir un pays parmi la liste dans le champ Pays')
                      
                             else:
-                                if new_birthyear=="" or new_birthyear < 1900 or new_birthyear > 2023:
+                                if input_birthyear=="" or input_birthyear < 1900 or input_birthyear > 2023:
                                     st.error('Veuillez entrer une année correcte dans le champ Année de naissance')
                      
                                 else:
-                                    if username_exists(new_username):
+                                    if username_exists(input_username):
                                         st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
 
                                     else:
-                                        if email_exists(new_email):
+                                        if email_exists(input_email):
                                             st.error("Cette adresse courriel est déjà associée à un compte.")
                                         else: 
-                                            add_user(new_name, new_surname, new_username, new_password, new_email, new_location, new_birthyear)
+                                            add_user(input_name, input_surname, input_username, input_password, input_email, input_location, input_birthyear)
                                             st.success("Inscription effectuée avec succès.")
                 
 # If the user selects login
