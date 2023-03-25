@@ -3,7 +3,7 @@ import urllib.request
 import csv
 
 # Set the URL of the raw CSV file in your GitHub repository
-csv_url = "https://raw.githubusercontent.com/username/repository-name/main/filename.csv"
+csv_url = "https://github.com/PaulDHcad/mti820/blob/main/users.csv"
 
 # Use urllib to read the contents of the CSV file from the URL
 response = urllib.request.urlopen(csv_url)
