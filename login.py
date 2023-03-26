@@ -90,15 +90,6 @@ def get_user_details(username):
                 return row
     return None
 
-#
-option1 = st.checkbox('Option 1')
-option2 = st.checkbox('Option 2')
-
-if option1:
-    st.write('Option 1 is selected.')
-if option2:
-    st.write('Option 2 is selected.')
-
 # Add a title
 st.title("Se connecter ou s'inscrire")
 
@@ -177,5 +168,30 @@ elif choice == "Se connecter":
             st.write("Votre adresse courriel :", userdata[6])
             st.write("Votre localisation :", userdata[4])
             st.write("Votre année de naissance :", userdata[8])
+            
+            #Option of favorites genres
+            option_animation = st.checkbox('Animation/Animés')
+            option_adventure = st.checkbox('Aventure')
+            option_romance = st.checkbox('Romantique')
+            option_comedy = st.checkbox('Comédie')
+            option_action = st.checkbox('Action')
+            option_family = st.checkbox('Famillial')
+            option_drama = st.checkbox('Dramatique')
+            option_crime = st.checkbox('Crimes')
+            option_fantasy = st.checkbox('Fantaisie')
+            option_scifi = st.checkbox('Science fiction')
+            option_thriller = st.checkbox('Thriller')
+            option_music = st.checkbox('Musical')
+            option_horror = st.checkbox('Horreur')
+            option_documentary = st.checkbox('Documentaire')
+            option_mystery = st.checkbox('Mystère')
+            option_western = st.checkbox('Western')
+            option_war = st.checkbox('Guerre')
+            option_tv_movie = st.checkbox('Film de télévision')
+            
+            if option_animation
+                st.write('Option 1 is selected.')
+            if option2:
+                st.write('Option 2 is selected.')
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
