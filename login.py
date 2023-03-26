@@ -90,6 +90,15 @@ def get_user_details(username):
                 return row
     return None
 
+#
+option1 = st.checkbox('Option 1')
+option2 = st.checkbox('Option 2')
+
+if option1:
+    st.write('Option 1 is selected.')
+if option2:
+    st.write('Option 2 is selected.')
+
 # Add a title
 st.title("Se connecter ou s'inscrire")
 
