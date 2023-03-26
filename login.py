@@ -189,7 +189,7 @@ elif choice == "Se connecter":
             option_war = st.checkbox('Guerre')
             option_tv_movie = st.checkbox('Film de télévision')
             
-            if option_animation
+            if option_animation:
                 st.write('Option 1 is selected.')
             if option2:
                 st.write('Option 2 is selected.')
