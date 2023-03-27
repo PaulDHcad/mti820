@@ -182,70 +182,70 @@ elif choice == "Se connecter":
             st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
             with col1:
-                selected = st.checkbox(Genre[0])
+                selected = st.checkbox(Genres[0])
                 if selected:
-                    selected_genre.append(Genre[0])
+                    selected_genre.append(Genres[0])
                     
-                selected = st.checkbox(Genre[1])
+                selected = st.checkbox(Genres[1])
                 if selected:
-                    selected_genre.append(Genre[1])
+                    selected_genre.append(Genres[1])
                     
-                selected = st.checkbox(Genre[2])
+                selected = st.checkbox(Genres[2])
                 if selected:
-                    selected_genre.append(Genre[2])
+                    selected_genre.append(Genres[2])
                     
-                selected = st.checkbox(Genre[3])
+                selected = st.checkbox(Genres[3])
                 if selected:
-                    selected_genre.append(Genre[3])                  
+                    selected_genre.append(Genres[3])                  
                     
-                selected = st.checkbox(Genre[4])
+                selected = st.checkbox(Genres[4])
                 if selected:
-                    selected_genre.append(Genre[4])                   
+                    selected_genre.append(Genres[4])                   
                     
-                selected = st.checkbox(Genre[5])
+                selected = st.checkbox(Genres[5])
                 if selected:
-                    selected_genre.append(Genre[5])     
+                    selected_genre.append(Genres[5])     
                     
-                selected = st.checkbox(Genre[6])
+                selected = st.checkbox(Genrs[6])
                 if selected:
-                    selected_genre.append(Genre[6])                    
+                    selected_genre.append(Genres[6])                    
                     
                 selected = st.checkbox(Genre[7])
                 if selected:
-                    selected_genre.append(Genre[7])
+                    selected_genre.append(Genres[7])
                     
             with col2:
-                selected = st.checkbox(Genre[8])
+                selected = st.checkbox(Genres[8])
                 if selected:
-                    selected_genre.append(Genre[8])
+                    selected_genre.append(Genres[8])
                     
-                selected = st.checkbox(Genre[9])
+                selected = st.checkbox(Genres[9])
                 if selected:
-                    selected_genre.append(Genre[9])
+                    selected_genre.append(Genres[9])
                     
-                selected = st.checkbox(Genre[10])
+                selected = st.checkbox(Genres[10])
                 if selected:
-                    selected_genre.append(Genre[10])
+                    selected_genre.append(Genres[10])
                     
-                selected = st.checkbox(Genre[11])
+                selected = st.checkbox(Genres[11])
                 if selected:
-                    selected_genre.append(Genre[11])                  
+                    selected_genre.append(Genres[11])                  
                     
-                selected = st.checkbox(Genre[12])
+                selected = st.checkbox(Genres[12])
                 if selected:
-                    selected_genre.append(Genre[12])                   
+                    selected_genre.append(Genres[12])                   
                     
-                selected = st.checkbox(Genre[13])
+                selected = st.checkbox(Genres[13])
                 if selected:
-                    selected_genre.append(Genre[13])     
+                    selected_genre.append(Genres[13])     
                     
-                selected = st.checkbox(Genre[14])
+                selected = st.checkbox(Genres[14])
                 if selected:
-                    selected_genre.append(Genre[14])                    
+                    selected_genre.append(Genres[14])                    
                     
-                selected = st.checkbox(Genre[15])
+                selected = st.checkbox(Genres[15])
                 if selected:
-                    selected_genre.append(Genre[15])                   
+                    selected_genre.append(Genres[15])                   
 #                option_adventure = generate_checkbox('Aventure')
 #                option_romance = generate_checkbox('Romantique')
 #                option_comedy = generate_checkbox('Comédie')
