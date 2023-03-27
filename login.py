@@ -20,6 +20,7 @@ def generate_checkbox(checkbox_value):
 
 # Define the path to the user storage file
 Countries = ["-- Sélectionner un pays parmi la liste --", "Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie saoudite", "Argentine", "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Bélarus", "Belgique", "Belize", "Bénin", "Bhoutan", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo, République démocratique du", "Congo, République du", "Corée du Nord", "Corée du Sud", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "République dominicaine", "Égypte", "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "États-Unis", "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", "Honduras", "Hongrie", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", "Liberia", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Îles Marshall", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Niue", "Norvège", "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Christophe-et-Niévès", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", "Salomon, Îles", "Salvador", "Samoa", "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Swaziland", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "République tchèque", "Thaïlande", "Timor-Leste", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican, cité du", "Venezuela", "Viêt Nam", "Yémen", "Zambie", "Zimbabwe"]
+Genres = ["Animation/Animé","Aventure","Romantique","Comédie","Action","Familial","Dramatique","Crimes","Fantaisie","Science fiction","Thriller","Musical","Horreur","Documentaire","Mystère","Western","Guerre","Film de télévision"]
 USER_STORAGE_FILE = 'users.csv'
 
 # If the user storage file doesn't exist, create an empty file
@@ -150,7 +151,7 @@ if choice == "S'inscrire":
                                         else: 
                                             add_user(input_name, input_surname, input_username, input_password, input_email, input_location, input_birthyear)
                                             st.success("Inscription effectuée avec succès.")
-                                            st.experimental_rerun()
+                                            #st.experimental_rerun()
                 
 # If the user selects login
 elif choice == "Se connecter":
@@ -161,7 +162,9 @@ elif choice == "Se connecter":
     # Add a button to submit the login credentials
     if st.button("Se connecter"):
         if check_credentials(username, password):
+            
             st.success("Connecté en temps que {}".format(username))
+            selected_genre = []
             
             # Add the rest of your application logic here
             userdata = get_user_details(username)
@@ -174,13 +177,75 @@ elif choice == "Se connecter":
             st.write("Votre localisation :", userdata[4])
             st.write("Votre année de naissance :", userdata[8])
             
-            #Option of favorites genres
+            # Option of favorites genres
             st.title("Favourites genres :")
             st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
             with col1 :
-                option_animation = st.checkbox('Animation/Animés')
-                cached_option_animation = generate_checkbox(option_animation)
+                selected = st.checkbox(Genre[0])
+                if selected:
+                    selected_genre.append(Genre[0])
+                    
+                selected = st.checkbox(Genre[1])
+                if selected:
+                    selected_genre.append(Genre[1])
+                    
+                selected = st.checkbox(Genre[2])
+                if selected:
+                    selected_genre.append(Genre[2])
+                    
+                selected = st.checkbox(Genre[3])
+                if selected:
+                    selected_genre.append(Genre[3])                  
+                    
+                selected = st.checkbox(Genre[4])
+                if selected:
+                    selected_genre.append(Genre[4])                   
+                    
+                selected = st.checkbox(Genre[5])
+                if selected:
+                    selected_genre.append(Genre[5])     
+                    
+                selected = st.checkbox(Genre[6])
+                if selected:
+                    selected_genre.append(Genre[6])                    
+                    
+                selected = st.checkbox(Genre[7])
+                if selected:
+                    selected_genre.append(Genre[7])                    
+                    
+             with col2 :
+                selected = st.checkbox(Genre[8])
+                if selected:
+                    selected_genre.append(Genre[8])
+                    
+                selected = st.checkbox(Genre[9])
+                if selected:
+                    selected_genre.append(Genre[9])
+                    
+                selected = st.checkbox(Genre[10])
+                if selected:
+                    selected_genre.append(Genre[10])
+                    
+                selected = st.checkbox(Genre[11])
+                if selected:
+                    selected_genre.append(Genre[11])                  
+                    
+                selected = st.checkbox(Genre[12])
+                if selected:
+                    selected_genre.append(Genre[12])                   
+                    
+                selected = st.checkbox(Genre[13])
+                if selected:
+                    selected_genre.append(Genre[13])     
+                    
+                selected = st.checkbox(Genre[14])
+                if selected:
+                    selected_genre.append(Genre[14])                    
+                    
+                selected = st.checkbox(Genre[15])
+                if selected:
+                    selected_genre.append(Genre[15])                    
 #                option_adventure = generate_checkbox('Aventure')
 #                option_romance = generate_checkbox('Romantique')
 #                option_comedy = generate_checkbox('Comédie')
@@ -200,45 +265,46 @@ elif choice == "Se connecter":
 #                option_war = generate_checkbox('Guerre')
 #                option_tv_movie = generate_checkbox('Film de télévision')
             
-            selected_genre = []
+            
             
             if st.button("Valider la saisie"):
-                if option_animation:
-                    selected_genre.append("Animation/Animés")
-                if option_adventure:
-                    selected_genre.append("Aventure")
-                if option_romance:
-                    selected_genre.append("Romantique")               
-                if option_comedy:
-                    selected_genre.append("Comédie") 
-                if option_comedy:
-                   selected_genre.append("Action")
-                if option_action:
-                   selected_genre.append("Famillial")      
-                if option_drama:
-                    selected_genre.append("Dramatique")
-                if option_crime:
-                    selected_genre.append("Crimes")
-                if option_fantasy:
-                    selected_genre.append("Fantaisie")               
-                if option_scifi:
-                    selected_genre.append("Science fiction") 
-                if option_thriller:
-                   selected_genre.append("Thriller")
-                if option_music:
-                   selected_genre.append("Musical")    
-                if option_horror:
-                    selected_genre.append("Horreur")
-                if option_documentary:
-                    selected_genre.append("Documentaire")
-                if option_mystery:
-                    selected_genre.append("Mystère")               
-                if option_western:
-                    selected_genre.append("Western") 
-                if option_war:
-                   selected_genre.append("Guerre")
-                if option_tv_movie:
-                   selected_genre.append("Film de télévision") 
+                writer.writerow([_, _, _, _, _, _, _, selected_genre, _])
+#                if option_animation:
+#                    selected_genre.append("Animation/Animés")
+#                if option_adventure:
+#                    selected_genre.append("Aventure")
+#                if option_romance:
+#                    selected_genre.append("Romantique")               
+#                if option_comedy:
+#                    selected_genre.append("Comédie") 
+#                if option_comedy:
+#                   selected_genre.append("Action")
+#                if option_action:
+#                   selected_genre.append("Famillial")      
+#                if option_drama:
+#                    selected_genre.append("Dramatique")
+#                if option_crime:
+#                    selected_genre.append("Crimes")
+#                if option_fantasy:
+#                    selected_genre.append("Fantaisie")               
+#                if option_scifi:
+#                    selected_genre.append("Science fiction") 
+#                if option_thriller:
+#                   selected_genre.append("Thriller")
+#                if option_music:
+#                   selected_genre.append("Musical")    
+#                if option_horror:
+#                    selected_genre.append("Horreur")
+#                if option_documentary:
+#                    selected_genre.append("Documentaire")
+#                if option_mystery:
+#                    selected_genre.append("Mystère")               
+#                if option_western:
+#                    selected_genre.append("Western") 
+#                if option_war:
+#                   selected_genre.append("Guerre")
+#                if option_tv_movie:
+#                   selected_genre.append("Film de télévision") 
                 
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
