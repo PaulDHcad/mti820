@@ -214,9 +214,9 @@ elif choice == "Se connecter":
                 if selected:
                     selected_genre.append(Genre[7])
                     
-			with col2: 
-				selected = st.checkbox(Genre[8])
-				if selected:
+            with col2:
+                selected = st.checkbox(Genre[8])
+                if selected:
                     selected_genre.append(Genre[8])
                     
                 selected = st.checkbox(Genre[9])
@@ -245,7 +245,7 @@ elif choice == "Se connecter":
                     
                 selected = st.checkbox(Genre[15])
                 if selected:
-                    selected_genre.append(Genre[15])                    
+                    selected_genre.append(Genre[15])                   
 #                option_adventure = generate_checkbox('Aventure')
 #                option_romance = generate_checkbox('Romantique')
 #                option_comedy = generate_checkbox('Comédie')
