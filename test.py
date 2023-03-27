@@ -27,17 +27,37 @@ def main():
     if st.button('Validate'):
         selected_options = []
         if option1:
-            selected_options.append('Option 1')
+            selected_options.append(genres[0])
         if option2:
-            selected_options.append('Option 2')
+            selected_options.append(genres[1])
         if option3:
-            selected_options.append('Option 3')
+            selected_options.append(genres[2])
         if option4:
-            selected_options.append('Option 4')
+            selected_options.append(genres[3])
         if option5:
-            selected_options.append('Option 5')
+            selected_options.append(genres[4])
         if option6:
-            selected_options.append('Option 6')
+            selected_options.append(genres[5])
+        if option7:
+            selected_options.append(genres[6])
+        if option8:
+            selected_options.append(genres[7])
+        if option9:
+            selected_options.append(genres[8])
+        if option10:
+            selected_options.append(genres[9])
+        if option11:
+            selected_options.append(genres[10])
+        if option12:
+            selected_options.append(genres[11])
+        if option13:
+            selected_options.append(genres[12])
+        if option14:
+            selected_options.append(genres[13])   
+        if option15:
+            selected_options.append(genres[14])
+        if option16:
+            selected_options.append(genres[15])               
         st.write(f'Selected options: {selected_options}')
 
 if __name__ == '__main__':
