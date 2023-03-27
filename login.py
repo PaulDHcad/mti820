@@ -206,11 +206,11 @@ elif choice == "Se connecter":
                 if selected:
                     selected_genre.append(Genres[5])     
                     
-                selected = st.checkbox(Genrs[6])
+                selected = st.checkbox(Genres[6])
                 if selected:
                     selected_genre.append(Genres[6])                    
                     
-                selected = st.checkbox(Genre[7])
+                selected = st.checkbox(Genres[7])
                 if selected:
                     selected_genre.append(Genres[7])
                     
