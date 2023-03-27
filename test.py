@@ -138,6 +138,19 @@ def main():
                                                 add_user(input_name, input_surname, input_username, input_password, input_email, input_location, input_birthyear)
                                                 st.success("Inscription effectuée avec succès.")
                                                 #st.experimental_rerun()    
+
+    # If the user selects login
+    elif choice == "Se connecter":
+        # Add user input fields for username and password
+        username = st.text_input("Nom d'utilisateur")
+        password = st.text_input("Mot de passe", type="password")
+
+        # Add a button to submit the login credentials
+        if st.button("Se connecter"):
+            if check_credentials(username, password):
+
+                st.success("Connecté en temps que {}".format(username))
+                                                
     #genres = ["Animation/Animé","Aventure","Romantique","Comédie","Action","Familial","Dramatique","Crimes","Fantaisie","Science fiction","Thriller","Musical","Horreur","Documentaire","Mystère","Western","Guerre","Film de télévision"]
     # Define the checkboxes in two columns
     col1, col2 = st.columns(2)
