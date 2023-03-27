@@ -1,4 +1,84 @@
 import streamlit as st
+import csv
+#import urllib.request
+import hashlib
+import os
+import random
+
+countries = ["-- Sélectionner un pays parmi la liste --", "Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie saoudite", "Argentine", "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Bélarus", "Belgique", "Belize", "Bénin", "Bhoutan", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo, République démocratique du", "Congo, République du", "Corée du Nord", "Corée du Sud", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "République dominicaine", "Égypte", "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "États-Unis", "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", "Honduras", "Hongrie", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", "Liberia", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Îles Marshall", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Niue", "Norvège", "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Christophe-et-Niévès", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", "Salomon, Îles", "Salvador", "Samoa", "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Swaziland", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "République tchèque", "Thaïlande", "Timor-Leste", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican, cité du", "Venezuela", "Viêt Nam", "Yémen", "Zambie", "Zimbabwe"]
+USER_STORAGE_FILE = 'users.csv'
+
+# If the user storage file doesn't exist, create an empty file
+if not os.path.isfile(USER_STORAGE_FILE):
+    with open(USER_STORAGE_FILE, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["id", "name", "surname", "username", "location", "password", "email", "idfavoritegenre", "birthyear"])
+
+# Define a function to hash the password
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Define a function to check if an ID number already exists in the CSV file
+def id_number_exists(id_number):
+    with open(USER_STORAGE_FILE, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[0] == str(id_number):
+                return True
+    return False
+                         
+# Generate a random ID number that is not already in the CSV file
+def new_id() :
+    while True:
+        id_number = random.randint(100000, 999999)
+        if not id_number_exists(id_number):
+            break
+    return id_number
+                         
+# Define a function to check if a username exists in the user storage file
+def username_exists(username):
+    with open(USER_STORAGE_FILE, 'r', newline='') as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            if username == row[3]:
+                return True
+    return False
+
+# Define a function to check if a email is already used in the user storage file
+def email_exists(email):
+    with open(USER_STORAGE_FILE, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[6] == str(email):
+                return True
+    return False
+
+# Define a function to add a new user to the user storage file
+def add_user(name, surname, username, password, email, location, birthyear,):
+    with open(USER_STORAGE_FILE, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([new_id(), name, surname, username, location, hash_password(password), email, "", birthyear])
+
+# Define a function to check if the login credentials are correct
+def check_credentials(username, password):
+    with open(USER_STORAGE_FILE, 'r', newline='') as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            if username == row[3] and hash_password(password) == row[5]:
+                return True
+    return False
+
+# Define a function to get the user's details
+def get_user_details(username):
+    with open(USER_STORAGE_FILE, 'r', newline='') as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            if username == row[3]:
+                return row
+    return None
 
 def main():
     #genres = ["Animation/Animé","Aventure","Romantique","Comédie","Action","Familial","Dramatique","Crimes","Fantaisie","Science fiction","Thriller","Musical","Horreur","Documentaire","Mystère","Western","Guerre","Film de télévision"]
