@@ -1,16 +1,33 @@
 import streamlit as st
-import urllib.request
-import csv
 
-# Set the URL of the raw CSV file in your GitHub repository
-csv_url = "https://github.com/PaulDHcad/mti820/blob/main/users.csv"
+def main():
+    # Define the checkboxes in two columns
+    col1, col2 = st.beta_columns(2)
+    with col1:
+        option1 = st.checkbox('Option 1')
+        option2 = st.checkbox('Option 2')
+        option3 = st.checkbox('Option 3')
+    with col2:
+        option4 = st.checkbox('Option 4')
+        option5 = st.checkbox('Option 5')
+        option6 = st.checkbox('Option 6')
 
-# Use urllib to read the contents of the CSV file from the URL
-response = urllib.request.urlopen(csv_url)
+    # Define a validation button to write the selected options into a variable
+    if st.button('Validate'):
+        selected_options = []
+        if option1:
+            selected_options.append('Option 1')
+        if option2:
+            selected_options.append('Option 2')
+        if option3:
+            selected_options.append('Option 3')
+        if option4:
+            selected_options.append('Option 4')
+        if option5:
+            selected_options.append('Option 5')
+        if option6:
+            selected_options.append('Option 6')
+        st.write(f'Selected options: {selected_options}')
 
-# Use csv.reader to parse the contents of the CSV file
-reader = csv.reader(response.read().decode('utf-8').splitlines())
-
-# Iterate through the rows of the CSV file and display them in a Streamlit table
-for row in reader:
-    st.write(row)
+if __name__ == '__main__':
+    main()
