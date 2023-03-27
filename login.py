@@ -172,6 +172,7 @@ elif choice == "Se connecter":
             
             #Option of favorites genres
             st.title("Favourites genres :")
+            st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
             with col1 :
                 option_animation = st.checkbox('Animation/Animés')
@@ -196,12 +197,43 @@ elif choice == "Se connecter":
             
             selected_genre = []
             
-            if option_animation:
-                selected_genre.append("Animation/Animés")
-                st.write("Vos genre favoris:", selected_genre)
-            if option_adventure:
-                selected_genre.append("Aventure")
-                st.write("Vos genre favoris:", selected_genre)                
-
+            if st.button("Valider la saisie"):
+                if option_animation:
+                    selected_genre.append("Animation/Animés")
+                if option_adventure:
+                    selected_genre.append("Aventure")
+                if option_romance:
+                    selected_genre.append("Romantique")               
+                if option_comedy:
+                    selected_genre.append("Comédie") 
+                if option_comedy:
+                   selected_genre.append("Action")
+                if option_action:
+                   selected_genre.append("Famillial")      
+                if option_drama:
+                    selected_genre.append("Dramatique")
+                if option_crime:
+                    selected_genre.append("Crimes")
+                if option_fantasy:
+                    selected_genre.append("Fantaisie")               
+                if option_scifi:
+                    selected_genre.append("Science fiction") 
+                if option_thriller:
+                   selected_genre.append("Thriller")
+                if option_music:
+                   selected_genre.append("Musical")    
+                if option_horror:
+                    selected_genre.append("Horreur")
+                if option_documentary:
+                    selected_genre.append("Documentaire")
+                if option_mystery:
+                    selected_genre.append("Mystère")               
+                if option_western:
+                    selected_genre.append("Western") 
+                if option_war:
+                   selected_genre.append("Guerre")
+                if option_tv_movie:
+                   selected_genre.append("Film de télévision") 
+                
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
