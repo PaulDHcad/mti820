@@ -95,7 +95,7 @@ def main():
         input_username = st.text_input("Nouveau nom d'utilisateur", value="")
         input_password = st.text_input("Nouveau mot de passe", value="", type="password")
         input_email = st.text_input("Adresse courriel", value="")
-        input_location = st.selectbox("Select a country", Countries)
+        input_location = st.selectbox("Select a country", countries)
         input_birthyear = st.number_input("Année de naissance", value=2000, step=1)
 
         # Add a button to submit the sign up information
