@@ -246,65 +246,9 @@ elif choice == "Se connecter":
                 selected = st.checkbox(Genres[15])
                 if selected:
                     selected_genre.append(Genres[15])                   
-#                option_adventure = generate_checkbox('Aventure')
-#                option_romance = generate_checkbox('Romantique')
-#                option_comedy = generate_checkbox('Comédie')
-#                option_action = generate_checkbox('Action')
-#                option_family = generate_checkbox('Famillial')
-#                option_drama = generate_checkbox('Dramatique')
-#                option_crime = generate_checkbox('Crimes')
-#                option_fantasy = generate_checkbox('Fantaisie')                
-#            with col2 :
-#                option_scifi = generate_checkbox('Science fiction')
-#                option_thriller = generate_checkbox('Thriller')
-#                option_music = generate_checkbox('Musical')
-#                option_horror = generate_checkbox('Horreur')
-#                option_documentary = generate_checkbox('Documentaire')
-#                option_mystery = generate_checkbox('Mystère')
-#                option_western = generate_checkbox('Western')
-#                option_war = generate_checkbox('Guerre')
-#                option_tv_movie = generate_checkbox('Film de télévision')
-            
-            
-            
+
             if st.button("Valider la saisie"):
                 writer.writerow([_, _, _, _, _, _, _, selected_genre, _])
-#                if option_animation:
-#                    selected_genre.append("Animation/Animés")
-#                if option_adventure:
-#                    selected_genre.append("Aventure")
-#                if option_romance:
-#                    selected_genre.append("Romantique")               
-#                if option_comedy:
-#                    selected_genre.append("Comédie") 
-#                if option_comedy:
-#                   selected_genre.append("Action")
-#                if option_action:
-#                   selected_genre.append("Famillial")      
-#                if option_drama:
-#                    selected_genre.append("Dramatique")
-#                if option_crime:
-#                    selected_genre.append("Crimes")
-#                if option_fantasy:
-#                    selected_genre.append("Fantaisie")               
-#                if option_scifi:
-#                    selected_genre.append("Science fiction") 
-#                if option_thriller:
-#                   selected_genre.append("Thriller")
-#                if option_music:
-#                   selected_genre.append("Musical")    
-#                if option_horror:
-#                    selected_genre.append("Horreur")
-#                if option_documentary:
-#                    selected_genre.append("Documentaire")
-#                if option_mystery:
-#                    selected_genre.append("Mystère")               
-#                if option_western:
-#                    selected_genre.append("Western") 
-#                if option_war:
-#                   selected_genre.append("Guerre")
-#                if option_tv_movie:
-#                   selected_genre.append("Film de télévision") 
                 
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
