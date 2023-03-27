@@ -14,7 +14,7 @@ import random
 # Use csv.reader to parse the contents of the CSV file
 # USER_STORAGE_FILE = csv.reader(response.read().decode('utf-8').splitlines())
 
-#@st.cache
+@st.experimental_singleton
 def generate_checkbox(variable_name):
     checkbox_value = st.checkbox(variable_name)
     return checkbox_value
