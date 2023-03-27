@@ -158,6 +158,7 @@ elif choice == "Se connecter":
     if st.button("Se connecter"):
         if check_credentials(username, password):
             st.success("Connecté en temps que {}".format(username))
+            
             # Add the rest of your application logic here
             userdata = get_user_details(username)
             st.title("Vos informations")
@@ -189,9 +190,14 @@ elif choice == "Se connecter":
             option_war = st.checkbox('Guerre')
             option_tv_movie = st.checkbox('Film de télévision')
             
+            selected_genre = []
+            
             if option_animation:
-                st.write('Option 1 is selected.')
-            if option2:
-                st.write('Option 2 is selected.')
+                selected_genre.append("Animation/Animés")
+                st.write("Vos genre favoris:", selected_genre)
+            if option_adventure:
+                selected_genre.append("Aventure")
+                st.write("Vos genre favoris:", selected_genre)                
+
         else:
             st.error("Nom d'utilisateur et/ou mot de passe incorrect(s).")
