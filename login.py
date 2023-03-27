@@ -215,8 +215,8 @@ elif choice == "Se connecter":
                     selected_genre.append(Genre[7])
                     
 			with col2: 
-                selected = st.checkbox(Genre[8])
-                if selected:
+				selected = st.checkbox(Genre[8])
+				if selected:
                     selected_genre.append(Genre[8])
                     
                 selected = st.checkbox(Genre[9])
