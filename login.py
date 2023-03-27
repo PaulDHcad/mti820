@@ -14,9 +14,8 @@ import random
 # Use csv.reader to parse the contents of the CSV file
 # USER_STORAGE_FILE = csv.reader(response.read().decode('utf-8').splitlines())
 
-@st.experimental_singleton
-def generate_checkbox(variable_name):
-    checkbox_value = st.checkbox(variable_name)
+@st.cache
+def generate_checkbox(checkbox_value):
     return checkbox_value
 
 # Define the path to the user storage file
@@ -180,7 +179,8 @@ elif choice == "Se connecter":
             st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
             with col1 :
-                option_animation = generate_checkbox('Animation/Animés')
+                option_animation = st.checkbox('Animation/Animés')
+                cached_option_animation = generate_checkbox(option_animation)
                 option_adventure = generate_checkbox('Aventure')
                 option_romance = generate_checkbox('Romantique')
                 option_comedy = generate_checkbox('Comédie')
