@@ -14,6 +14,11 @@ import random
 # Use csv.reader to parse the contents of the CSV file
 # USER_STORAGE_FILE = csv.reader(response.read().decode('utf-8').splitlines())
 
+@st.cache
+def generate_checkbox(variable_name):
+    checkbox_value = st.checkbox(variable_name)
+    return checkbox_value
+
 # Define the path to the user storage file
 Countries = ["-- Sélectionner un pays parmi la liste --", "Afghanistan", "Afrique du Sud", "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie saoudite", "Argentine", "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Bélarus", "Belgique", "Belize", "Bénin", "Bhoutan", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunei", "Bulgarie", "Burkina Faso", "Burundi", "Cambodge", "Cameroun", "Canada", "Cap-Vert", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Congo, République démocratique du", "Congo, République du", "Corée du Nord", "Corée du Sud", "Costa Rica", "Côte d'Ivoire", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "République dominicaine", "Égypte", "Émirats arabes unis", "Équateur", "Érythrée", "Espagne", "Estonie", "États-Unis", "Éthiopie", "Fidji", "Finlande", "France", "Gabon", "Gambie", "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée", "Guinée équatoriale", "Guinée-Bissau", "Guyana", "Haïti", "Honduras", "Hongrie", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", "Liban", "Liberia", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", "Malaisie", "Malawi", "Maldives", "Mali", "Malte", "Maroc", "Îles Marshall", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", "Mongolie", "Monténégro", "Mozambique", "Myanmar", "Namibie", "Nauru", "Népal", "Nicaragua", "Niger", "Nigeria", "Niue", "Norvège", "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Panama", "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Christophe-et-Niévès", "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", "Salomon, Îles", "Salvador", "Samoa", "Sao Tomé-et-Principe", "Sénégal", "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", "Sri Lanka", "Suède", "Suisse", "Suriname", "Swaziland", "Syrie", "Tadjikistan", "Tanzanie", "Tchad", "République tchèque", "Thaïlande", "Timor-Leste", "Togo", "Tonga", "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican, cité du", "Venezuela", "Viêt Nam", "Yémen", "Zambie", "Zimbabwe"]
 USER_STORAGE_FILE = 'users.csv'
@@ -175,25 +180,25 @@ elif choice == "Se connecter":
             st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
             with col1 :
-                option_animation = st.checkbox('Animation/Animés')
-                option_adventure = st.checkbox('Aventure')
-                option_romance = st.checkbox('Romantique')
-                option_comedy = st.checkbox('Comédie')
-                option_action = st.checkbox('Action')
-                option_family = st.checkbox('Famillial')
-                option_drama = st.checkbox('Dramatique')
-                option_crime = st.checkbox('Crimes')
-                option_fantasy = st.checkbox('Fantaisie')                
+                option_animation = generate_checkbox('Animation/Animés')
+                option_adventure = generate_checkbox('Aventure')
+                option_romance = generate_checkbox('Romantique')
+                option_comedy = generate_checkbox('Comédie')
+                option_action = generate_checkbox('Action')
+                option_family = generate_checkbox('Famillial')
+                option_drama = generate_checkbox('Dramatique')
+                option_crime = generate_checkbox('Crimes')
+                option_fantasy = generate_checkbox('Fantaisie')                
             with col2 :
-                option_scifi = st.checkbox('Science fiction')
-                option_thriller = st.checkbox('Thriller')
-                option_music = st.checkbox('Musical')
-                option_horror = st.checkbox('Horreur')
-                option_documentary = st.checkbox('Documentaire')
-                option_mystery = st.checkbox('Mystère')
-                option_western = st.checkbox('Western')
-                option_war = st.checkbox('Guerre')
-                option_tv_movie = st.checkbox('Film de télévision')
+                option_scifi = generate_checkbox('Science fiction')
+                option_thriller = generate_checkbox('Thriller')
+                option_music = generate_checkbox('Musical')
+                option_horror = generate_checkbox('Horreur')
+                option_documentary = generate_checkbox('Documentaire')
+                option_mystery = generate_checkbox('Mystère')
+                option_western = generate_checkbox('Western')
+                option_war = generate_checkbox('Guerre')
+                option_tv_movie = generate_checkbox('Film de télévision')
             
             selected_genre = []
             
