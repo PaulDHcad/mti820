@@ -181,7 +181,7 @@ elif choice == "Se connecter":
             st.title("Favourites genres :")
             st.write("Vos genre favoris:", userdata[7])
             col1, col2 = st.columns(2)
-            with col1 :
+            with col1:
                 selected = st.checkbox(Genre[0])
                 if selected:
                     selected_genre.append(Genre[0])
@@ -214,7 +214,7 @@ elif choice == "Se connecter":
                 if selected:
                     selected_genre.append(Genre[7])                    
                     
-             with col2 :
+             with col2:
                 selected = st.checkbox(Genre[8])
                 if selected:
                     selected_genre.append(Genre[8])
