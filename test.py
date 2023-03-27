@@ -1,16 +1,28 @@
 import streamlit as st
 
+genres = ["Animation/Animé","Aventure","Romantique","Comédie","Action","Familial","Dramatique","Crimes","Fantaisie","Science fiction","Thriller","Musical","Horreur","Documentaire","Mystère","Western","Guerre","Film de télévision"]
+
 def main():
     # Define the checkboxes in two columns
     col1, col2 = st.beta_columns(2)
     with col1:
-        option1 = st.checkbox('Option 1')
-        option2 = st.checkbox('Option 2')
-        option3 = st.checkbox('Option 3')
+        option1 = st.checkbox(genre[0])
+        option2 = st.checkbox(genre[1])
+        option3 = st.checkbox(genre[2])
+        option4 = st.checkbox(genre[3])
+        option5 = st.checkbox(genre[4])
+        option6 = st.checkbox(genre[5])
+        option7 = st.checkbox(genre[6])
+        option8 = st.checkbox(genre[7])          
     with col2:
-        option4 = st.checkbox('Option 4')
-        option5 = st.checkbox('Option 5')
-        option6 = st.checkbox('Option 6')
+        option9 = st.checkbox(genre[8])
+        option10 = st.checkbox(genre[9])
+        option11 = st.checkbox(genre[10])
+        option12 = st.checkbox(genre[11])
+        option13 = st.checkbox(genre[12])
+        option14 = st.checkbox(genre[13])
+        option15 = st.checkbox(genre[14])
+        option16 = st.checkbox(genre[15]) 
 
     # Define a validation button to write the selected options into a variable
     if st.button('Validate'):
