@@ -81,6 +81,63 @@ def get_user_details(username):
     return None
 
 def main():
+    # Add a title
+    st.title("Se connecter ou s'inscrire")
+
+    # Add radio buttons to select login or sign up
+    choice = st.radio("Sélectionner :", ("Se connecter", "S'inscrire"))
+
+    # If the user selects sign up
+    if choice == "S'inscrire":
+        # Add user input fields for username, password, and email
+        input_name = st.text_input("Prénom", value="")
+        input_surname = st.text_input("Nom", value="")
+        input_username = st.text_input("Nouveau nom d'utilisateur", value="")
+        input_password = st.text_input("Nouveau mot de passe", value="", type="password")
+        input_email = st.text_input("Adresse courriel", value="")
+        input_location = st.selectbox("Select a country", Countries)
+        input_birthyear = st.number_input("Année de naissance", value=2000, step=1)
+
+        # Add a button to submit the sign up information
+        if st.button("S'inscrire"):
+            if input_name=="":
+                st.error('Le champ Prénom est vide.')
+
+            else:
+                if input_surname=="":
+                    st.error('Le champ Nom est vide.')
+
+                else:
+                    if input_username=="":
+                        st.error("Le champ Nom d'utilisateur est vide.")
+
+                    else:
+                        if input_password=="":
+                            st.error('Le champ Mot de passe est vide.')
+
+                        else:
+                            if input_email=="":
+                                st.error('Le champ Adresse courriel est vide.')
+
+                            else:
+                                if input_location=="-- Sélectionner un pays parmi la liste --":
+                                    st.error('Veuillez choisir un pays parmi la liste dans le champ Pays')
+
+                                else:
+                                    if input_birthyear=="" or input_birthyear < 1900 or input_birthyear > 2023:
+                                        st.error('Veuillez entrer une année correcte dans le champ Année de naissance')
+
+                                    else:
+                                        if username_exists(input_username):
+                                            st.error("Nom d'utilisateur déjà utilisé. Veuillez en choisir un autre.")
+
+                                        else:
+                                            if email_exists(input_email):
+                                                st.error("Cette adresse courriel est déjà associée à un compte.")
+                                            else: 
+                                                add_user(input_name, input_surname, input_username, input_password, input_email, input_location, input_birthyear)
+                                                st.success("Inscription effectuée avec succès.")
+                                                #st.experimental_rerun()    
     #genres = ["Animation/Animé","Aventure","Romantique","Comédie","Action","Familial","Dramatique","Crimes","Fantaisie","Science fiction","Thriller","Musical","Horreur","Documentaire","Mystère","Western","Guerre","Film de télévision"]
     # Define the checkboxes in two columns
     col1, col2 = st.columns(2)
