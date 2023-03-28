@@ -59,7 +59,6 @@ def home():
     if st.button("Log out"):
         st.session_state['is_logged_in'] = False
 
-
 def main():
     if not os.path.exists(USER_CREDS_FILE):
         pd.DataFrame({"Username": [], "Salt": [], "HashedPassword": []}).to_csv(USER_CREDS_FILE, index=False)
@@ -67,12 +66,18 @@ def main():
     st.set_page_config(page_title="Multi-Page App", page_icon=":guardsman:", layout="wide")
 
     if not st.session_state.get('is_logged_in'):
-        login()
+        if login():
+            st.session_state['is_logged_in'] = True
+            home()
+            disconnect_button()
     else:
         home()
+        disconnect_button()
 
-    if not st.session_state.get('is_logged_in'):
-        signup()
+def disconnect_button():
+    if st.button("Disconnect"):
+        st.session_state['is_logged_in'] = False
+
 
 
 if __name__ == "__main__":
