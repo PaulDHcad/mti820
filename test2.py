@@ -1,62 +1,45 @@
 import streamlit as st
+import csv
 
-def home():
-    st.title('Home Page')
-    st.write('Welcome to my Streamlit app!')
-    st.write('Use the sidebar to navigate to other pages.')
+def home_page():
+    st.title("Home Page")
+    st.write("Welcome to the home page!")
+    st.write("You are logged in.")
 
-def editor():
-    st.title('Editor Page')
-    code = st.text_area('Enter some code:')
-    st.write('You entered the following code:')
-    st.code(code)
+def login_page():
+    st.title("Login Page")
+    st.write("Please enter your login credentials.")
+    
+    # Read the existing user credentials from the CSV file
+    with open('user_credentials.csv', 'r') as f:
+        reader = csv.reader(f)
+        user_credentials = {rows[0]:rows[1] for rows in reader}
+        
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    
+    if st.button("Log in"):
+        # Check if the user entered a valid email and password
+        if email in user_credentials and user_credentials[email] == password:
+            st.success("You have successfully logged in!")
+            # Redirect the user to the home page after logging in
+            st.experimental_rerun()
+        else:
+            st.error("Invalid login credentials.")
 
-def tags():
-    st.title('Tags Page')
-    tags = st.text_input('Enter some tags (separated by commas):')
-    st.write('You entered the following tags:')
-    for tag in tags.split(','):
-        st.write(tag.strip())
-
-def sign_in():
-    st.title('Sign In')
-    email = st.text_input('Email')
-    password = st.text_input('Password', type='password')
-    if st.button('Sign In'):
-        # Do sign-in logic here
-        st.write('You have signed in.')
-
-def log_in():
-    st.title('Log In')
-    email = st.text_input('Email')
-    password = st.text_input('Password', type='password')
-    if st.button('Log In'):
-        # Do log-in logic here
-        st.write('You have logged in.')
-
-# Define the pages dictionary
-pages = {
-    'Home': home,
-    'Editor': editor,
-    'Tags': tags,
-    'Sign In': sign_in,
-    'Log In': log_in
-}
-
-# Set the default page to 'Home'
-default_page = 'Home'
-
-# Create a sidebar with the page options
-st.sidebar.title('Navigation')
-for page_name in pages.keys():
-    if page_name == default_page:
-        st.sidebar.write(f'**{page_name}**')
+def main():
+    # Set the page title and icon
+    st.set_page_config(page_title="Multi-Page App Example", page_icon=":memo:")
+    
+    # Create a session state variable to keep track of whether the user is logged in
+    if "loggedin" not in st.session_state:
+        st.session_state.loggedin = False
+    
+    # Display the appropriate page based on whether the user is logged in
+    if st.session_state.loggedin:
+        home_page()
     else:
-        st.sidebar.write(f'[{page_name}](#{page_name.lower().replace(" ", "-")})')
+        login_page()
 
-# Display the selected page
-selected_page = st.sidebar.selectbox('', list(pages.keys()), index=list(pages.keys()).index(default_page))
-st.sidebar.write('---')
-st.sidebar.write(f'You are currently on the **{selected_page}** page.')
-
-pages[selected_page]()
+if __name__ == "__main__":
+    main()
