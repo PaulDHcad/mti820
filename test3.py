@@ -35,10 +35,10 @@ def login():
     if st.button("Log In"):
         if check_user_credentials(username, password):
             st.success("Logged in!")
-            return True
+            st.session_state['is_logged_in'] = True
         else:
             st.warning("Incorrect username or password")
-            return False
+
 
 def signup():
     st.subheader("Sign Up")
@@ -51,11 +51,14 @@ def signup():
         else:
             create_user(username, password)
             st.success("Account created!")
-            return True
+            st.session_state['is_logged_in'] = True
+
 
 def home():
     st.subheader("Home")
     st.write("Welcome to the Multi-Page App")
+    if st.button("Disconnect"):
+        st.session_state['is_logged_in'] = False
 
 
 def main():
@@ -65,14 +68,12 @@ def main():
     st.set_page_config(page_title="Multi-Page App", page_icon=":guardsman:", layout="wide")
 
     if not st.session_state.get('is_logged_in'):
-        if login():
-            st.session_state['is_logged_in'] = True
+        login()
     else:
         home()
 
     if not st.session_state.get('is_logged_in'):
-        if signup():
-            st.session_state['is_logged_in'] = True
+        signup()
 
 
 if __name__ == "__main__":
