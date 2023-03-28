@@ -1,6 +1,14 @@
 import streamlit as st
 import csv
 
+USER_STORAGE_FILE = 'users.csv'
+
+# If the user storage file doesn't exist, create an empty file
+if not os.path.isfile(USER_STORAGE_FILE):
+    with open(USER_STORAGE_FILE, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["email", "password"])
+
 def home_page():
     st.title("Home Page")
     st.write("Welcome to the home page!")
@@ -11,7 +19,7 @@ def login_page():
     st.write("Please enter your login credentials.")
     
     # Read the existing user credentials from the CSV file
-    with open('user_credentials.csv', 'r') as f:
+    with open(USER_STORAGE_FILE, 'r') as f:
         reader = csv.reader(f)
         user_credentials = {rows[0]:rows[1] for rows in reader}
         
