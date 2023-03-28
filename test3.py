@@ -2,57 +2,47 @@ import streamlit as st
 import pandas as pd
 import hashlib
 
-USER_CREDS_FILE = "user_credentials.csv"
-
 def login():
-    st.write("## Login")
+    st.title("Login")
+    df = pd.read_csv("users.csv")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-
     if st.button("Login"):
-        df = pd.read_csv(USER_CREDS_FILE, index_col="Username")
-        if username in df.index:
-            if hashlib.sha256(password.encode()).hexdigest() == df.loc[username, "Password"]:
-                st.success("Logged in!")
-                return True
-            else:
-                st.error("Invalid password")
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        if (df["Username"] == username).any() and (df["Password"] == hashed_password).any():
+            st.success("Logged in!")
+            return True
         else:
-            st.error("Username not found")
+            st.error("Invalid username or password.")
     return False
 
 def signup():
-    st.write("## Signup")
+    st.title("Sign Up")
+    df = pd.read_csv("users.csv", index_col=0)
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-
-    if st.button("Signup"):
-        try:
-            df = pd.read_csv(USER_CREDS_FILE, index_col="Username")
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=["Username", "Password"])
-        
+    if st.button("Sign Up"):
         if username in df.index:
-            st.error("Username already taken")
+            st.error("This username already exists.")
         else:
             hashed_password = hashlib.sha256(password.encode()).hexdigest()
-            df.loc[username] = [hashed_password]
-            df.to_csv(USER_CREDS_FILE)
-            st.success("Successfully created account")
+            df.loc[username, "Password"] = hashed_password
+            df.to_csv("users.csv")
+            st.success("You have successfully created a new account.")
             return True
     return False
 
-def home():
-    st.write("## Welcome to the Home Page!")
-    st.write("This is the home page")
-
 def main():
-    if not st.sidebar.checkbox("Login", False):
+    if login():
+        st.title("Home")
+        st.write("Welcome to the home page.")
+    else:
         if signup():
-            st.sidebar.success("Account created! Please login.")
-        return
-    elif login():
-        home()
-
+            st.title("Login")
+            st.info("Please log in with your new account.")
+        else:
+            st.title("Sign Up")
+            st.info("Please create a new account.")
+            
 if __name__ == "__main__":
     main()
