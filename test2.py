@@ -1,53 +1,71 @@
 import streamlit as st
 import csv
+import hashlib
 
-USER_STORAGE_FILE = 'users.csv'
-
-# If the user storage file doesn't exist, create an empty file
-if not os.path.isfile(USER_STORAGE_FILE):
-    with open(USER_STORAGE_FILE, 'w', newline='') as f:
+def create_user_credentials_file():
+    with open('user_credentials.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(["email", "password"])
+        writer.writerow(['email', 'hashed_password'])
 
-def home_page():
-    st.title("Home Page")
-    st.write("Welcome to the home page!")
-    st.write("You are logged in.")
+def read_user_credentials_file():
+    with open('user_credentials.csv', 'r') as f:
+        reader = csv.reader(f)
+        next(reader) # Skip the header row
+        return {row[0]: row[1] for row in reader}
+
+def write_user_credentials(email, password):
+    hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    with open('user_credentials.csv', 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow([email, hashed_password])
 
 def login_page():
-    st.title("Login Page")
-    st.write("Please enter your login credentials.")
-    
-    # Read the existing user credentials from the CSV file
-    with open(USER_STORAGE_FILE, 'r') as f:
-        reader = csv.reader(f)
-        user_credentials = {rows[0]:rows[1] for rows in reader}
-        
+    st.title("Login")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
-    
     if st.button("Log in"):
-        # Check if the user entered a valid email and password
-        if email in user_credentials and user_credentials[email] == password:
-            st.success("You have successfully logged in!")
-            # Redirect the user to the home page after logging in
-            st.experimental_rerun()
+        user_credentials = read_user_credentials_file()
+        if email in user_credentials and \
+                user_credentials[email] == hashlib.sha256(password.encode('utf-8')).hexdigest():
+            st.success("Logged in as {}".format(email))
+            return True
         else:
-            st.error("Invalid login credentials.")
+            st.error("Incorrect email or password")
+    return False
+
+def signup_page():
+    st.title("Sign Up")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    confirm_password = st.text_input("Confirm Password", type="password")
+    if st.button("Sign Up"):
+        if password == confirm_password:
+            write_user_credentials(email, password)
+            st.success("Successfully created account for {}".format(email))
+            return True
+        else:
+            st.error("Passwords do not match")
+    return False
+
+def home_page():
+    st.title("Welcome")
+    st.write("You are now logged in.")
 
 def main():
-    # Set the page title and icon
-    st.set_page_config(page_title="Multi-Page App Example", page_icon=":memo:")
-    
-    # Create a session state variable to keep track of whether the user is logged in
-    if "loggedin" not in st.session_state:
-        st.session_state.loggedin = False
-    
-    # Display the appropriate page based on whether the user is logged in
-    if st.session_state.loggedin:
+    if 'user_credentials.csv' not in os.listdir():
+        create_user_credentials_file()
+
+    login = False
+    signup = False
+
+    if st.sidebar.button("Log in"):
+        login = login_page()
+
+    if st.sidebar.button("Sign Up"):
+        signup = signup_page()
+
+    if login or signup:
         home_page()
-    else:
-        login_page()
 
 if __name__ == "__main__":
     main()
