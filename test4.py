@@ -2,60 +2,78 @@ import streamlit as st
 import pandas as pd
 import hashlib
 
-def hash_password(password):
-    salt = hashlib.sha256(str.encode(password)).hexdigest()[:8]
-    hashed_password = hashlib.sha256(str.encode(password+salt)).hexdigest()+":"+salt
-    return hashed_password
-  
-import random
-def generate_id():
-    return random.randint(100000, 999999)
+# Load the user credentials from a CSV file
+df_users = pd.read_csv("user_credentials.csv")
 
-def read_csv_file(filename):
-    df = pd.read_csv(filename)
-    return df
-  
-def write_csv_file(data, filename):
-    df = pd.read_csv(filename)
-    df = df.append(data, ignore_index=True)
-    df.to_csv(filename, index=False)
-    
-def sign_in():
-    st.header("Sign In")
+# Define a function to generate a unique ID for each user
+def generate_user_id():
+    return df_users["ID"].max() + 1 if len(df_users) > 0 else 1
+
+# Define a function to hash passwords
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Define the sign-up page
+def signup():
+    st.title("Sign Up")
     name = st.text_input("Name")
     surname = st.text_input("Surname")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     email = st.text_input("Email")
-    location = st.selectbox("Country", ["Country 1", "Country 2", "Country 3"])
-    birthyear = st.slider("Birthyear", 1900, 2023, 2000)
-    fav_genres = st.multiselect("Favorite Movie Genres", ["Action", "Comedy", "Drama", "Horror", "Romance"])
-    if st.button("Sign In"):
+    country = st.selectbox("Country", sorted(pd.read_csv("countries.csv")["name"]))
+    birthyear = st.slider("Birth Year", 1900, 2023)
+    genres = st.multiselect("Favorite Movie Genres", ["Action", "Comedy", "Drama", "Horror", "Romance"])
+    if st.button("Sign Up"):
         hashed_password = hash_password(password)
-        user_id = generate_id()
-        data = {"ID": user_id, "Name": name, "Surname": surname, "Username": username, "Password": hashed_password, "Email": email, "Location": location, "Birthyear": birthyear, "Favorite Genres": fav_genres}
-        write_csv_file(data, "user_data.csv")
-        st.success("You have successfully signed in!")
+        user_id = generate_user_id()
+        df_users.loc[len(df_users)] = [user_id, name, surname, username, hashed_password, email, country, birthyear, genres]
+        df_users.to_csv("user_credentials.csv", index=False)
+        st.success("You have successfully signed up! Please log in.")
 
-def log_in():
-    st.header("Log In")
+# Define the login page
+def login():
+    st.title("Log In")
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Log In"):
-        df = read_csv_file("user_data.csv")
-        user_data = df.loc[df["Username"] == username]
-        if user_data.empty:
-            st.warning("Username not found.")
+        hashed_password = hash_password(password)
+        user = df_users[(df_users["Username"] == username) & (df_users["Password"] == hashed_password)]
+        if len(user) == 1:
+            st.success("You have successfully logged in!")
+            st.write(user.iloc[0])
+            st.write("Favorite movie genres:", user["Favorite Movie Genres"].iloc[0])
         else:
-            hashed_password = user_data.iloc[0]["Password"]
-            salt = hashed_password.split(":")[1]
-            if hashed_password == hashlib.sha256(str.encode(password+salt)).hexdigest()+":"+salt:
-                st.success("Logged in successfully!")
-                user_id = user_data.iloc[0]["ID"]
-                name = user_data.iloc[0]["Name"]
-                surname = user_data.iloc[0]["Surname"]
-                email = user_data.iloc[0]["Email"]
-                location = user_data.iloc[0]["Location"]
-                birthyear = user_data
-                
-                
+            st.error("Incorrect username or password. Please try again.")
+
+# Define the home page
+def home(user):
+    st.title("Home")
+    st.write(user)
+    st.write("Favorite movie genres:", user["Favorite Movie Genres"])
+
+# Define the app
+def app():
+    st.set_page_config(page_title="Movie Genres App", page_icon=":movie_camera:")
+    st.sidebar.title("Navigation")
+    pages = {
+        "Sign Up": signup,
+        "Log In": login,
+    }
+    page = st.sidebar.radio("Go to", tuple(pages.keys()))
+    user = None
+    if page == "Sign Up":
+        pages[page]()
+    elif page == "Log In":
+        username = st.session_state.get("username")
+        if username:
+            user = df_users[df_users["Username"] == username]
+            home(user.iloc[0])
+        else:
+            login()
+            if st.session_state.username:
+                user = df_users[df_users["Username"] == st.session_state.username]
+                home(user.iloc[0])
+
+if __name__ == "__main__":
+    app()
