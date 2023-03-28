@@ -18,11 +18,29 @@ def tags():
     for tag in tags.split(','):
         st.write(tag.strip())
 
+def sign_in():
+    st.title('Sign In')
+    email = st.text_input('Email')
+    password = st.text_input('Password', type='password')
+    if st.button('Sign In'):
+        # Do sign-in logic here
+        st.write('You have signed in.')
+
+def log_in():
+    st.title('Log In')
+    email = st.text_input('Email')
+    password = st.text_input('Password', type='password')
+    if st.button('Log In'):
+        # Do log-in logic here
+        st.write('You have logged in.')
+
 # Define the pages dictionary
 pages = {
     'Home': home,
     'Editor': editor,
-    'Tags': tags
+    'Tags': tags,
+    'Sign In': sign_in,
+    'Log In': log_in
 }
 
 # Set the default page to 'Home'
