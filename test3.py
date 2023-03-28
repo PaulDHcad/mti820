@@ -35,16 +35,15 @@ def login():
     if st.button("Log In"):
         if check_user_credentials(username, password):
             st.success("Logged in!")
-            return True, username
+            return True
         else:
             st.warning("Incorrect username or password")
-            return False, None
-
+            return False
 
 def signup():
     st.subheader("Sign Up")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    username = st.text_input("Username", key="signup_username")
+    password = st.text_input("Password", type="password", key="signup_password")
     if st.button("Sign Up"):
         df = pd.read_csv(USER_CREDS_FILE)
         if username in df["Username"].values:
@@ -54,6 +53,10 @@ def signup():
             st.success("Account created!")
             return True
 
+def home():
+    st.subheader("Home")
+    st.write("Welcome to the Multi-Page App")
+
 
 def main():
     if not os.path.exists(USER_CREDS_FILE):
@@ -61,36 +64,16 @@ def main():
 
     st.set_page_config(page_title="Multi-Page App", page_icon=":guardsman:", layout="wide")
 
-    st.title("Multi-Page App with Streamlit")
+    if not st.session_state.get('is_logged_in'):
+        if login():
+            st.session_state['is_logged_in'] = True
+    else:
+        home()
 
-    menu = ["Login/Sign Up", "Home"]
-    choice = st.sidebar.selectbox("Select a page", menu)
+    if not st.session_state.get('is_logged_in'):
+        if signup():
+            st.session_state['is_logged_in'] = True
 
-    if choice == "Login/Sign Up":
-        if login()[0]:
-            st.sidebar.success("Connected as {}".format(login()[1]))
-            st.empty()
-            st.stop()
-        elif signup():
-            st.sidebar.success("Connected as {}".format(signup()))
-            st.empty()
-            st.stop()
-    elif choice == "Home":
-        if not os.path.exists(USER_CREDS_FILE):
-            st.warning("No users found. Please sign up first!")
-            st.stop()
-        else:
-            if not st.session_state.get('logged_in', False):
-                st.warning("You need to log in first!")
-                st.stop()
-            else:
-                st.subheader("Home")
-                st.write("Welcome to the Multi-Page App, {}".format(st.session_state['username']))
-                if st.button("Disconnect"):
-                    st.session_state['logged_in'] = False
-                    st.sidebar.warning("Disconnected")
-                    st.empty()
-                    st.stop()
 
 if __name__ == "__main__":
     main()
