@@ -1,65 +1,49 @@
-import streamlit as st
+import os
 import pandas as pd
-import hashlib
+import streamlit as st
+from passlib.hash import pbkdf2_sha256
 
 USER_CREDS_FILE = "user_credentials.csv"
-HASH_FUNCTION = hashlib.sha256
+EXPECTED_COLUMNS = ["Username", "Password"]
 
-def create_account_page():
-    st.header("Create New Account")
-    new_username = st.text_input("Username")
-    new_password = st.text_input("Password", type="password")
-    confirm_password = st.text_input("Confirm Password", type="password")
-    if new_password != confirm_password:
-        st.error("Error: Passwords do not match!")
-        return
 
-    # Hash the password and store the credentials
-    hashed_password = HASH_FUNCTION(new_password.encode()).hexdigest()
-    credentials = pd.read_csv(USER_CREDS_FILE, index_col="Username") if pd.read_csv(USER_CREDS_FILE, index_col="Username", error_bad_lines=False).empty == False else pd.DataFrame(columns=["Username", "Password"]).set_index("Username")
-    if new_username in credentials.index:
-        st.error("Error: Username already exists!")
-        return
-    credentials.loc[new_username] = [hashed_password]
-    credentials.to_csv(USER_CREDS_FILE)
-    st.success("Account created successfully!")
-    st.info("Please login to your new account.")
+def get_user_credentials():
+    if not os.path.isfile(USER_CREDS_FILE):
+        create_user_credentials_file()
 
-def login_page():
-    st.header("Login")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    credentials = pd.read_csv(USER_CREDS_FILE, index_col="Username") if pd.read_csv(USER_CREDS_FILE, index_col="Username", error_bad_lines=False).empty == False else pd.DataFrame(columns=["Username", "Password"]).set_index("Username")
-    if username in credentials.index:
-        hashed_password = HASH_FUNCTION(password.encode()).hexdigest()
-        if hashed_password == credentials.loc[username, "Password"]:
-            st.success("Login successful!")
-            return True
-        else:
-            st.error("Error: Incorrect password!")
-    elif username != "":
-        st.error("Error: Username not found!")
-    return False
+    df = pd.read_csv(USER_CREDS_FILE, index_col="Username")
 
-def home_page():
-    st.header("Welcome to the Home Page")
-    st.write("You are now logged in.")
-    st.write("This is your home page.")
+    # Verify that the expected columns are present in the user credentials file
+    if set(df.columns) != set(EXPECTED_COLUMNS):
+        raise ValueError("User credentials file is missing required columns.")
+
+    return df.to_dict()["Password"]
+
+
+def create_user_credentials_file():
+    df = pd.DataFrame(columns=EXPECTED_COLUMNS)
+    df.to_csv(USER_CREDS_FILE, index=False)
+
 
 def main():
-    st.set_page_config(page_title="Sign-In/Log-In", page_icon=":guardsman:", layout="wide")
-    st.title("Sign-In/Log-In")
+    st.set_page_config(page_title="Login", page_icon=":guardsman:", layout="wide")
 
-    # Create user credentials file if it doesn't exist
-    try:
-        pd.read_csv(USER_CREDS_FILE, index_col="Username")
-    except FileNotFoundError:
-        pd.DataFrame(columns=["Username", "Password"]).set_index("Username").to_csv(USER_CREDS_FILE)
-    
-    if not login_page():
-        create_account_page()
+    # Get user credentials
+    credentials = get_user_credentials()
 
-    home_page()
+    # Login form
+    st.title("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    login_button = st.button("Login")
+
+    if login_button:
+        # Verify user credentials
+        if username in credentials and pbkdf2_sha256.verify(password, credentials[username]):
+            st.success("Logged in!")
+        else:
+            st.error("Invalid username or password")
+
 
 if __name__ == "__main__":
     main()
