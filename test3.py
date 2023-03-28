@@ -68,12 +68,17 @@ def main():
     st.set_page_config(page_title="Multi-Page App", page_icon=":guardsman:", layout="wide")
 
     if not st.session_state.get('is_logged_in'):
-        login()
+        if login():
+            st.session_state['is_logged_in'] = True
+            home()
+        else:
+            if signup():
+                st.session_state['is_logged_in'] = True
+                home()
     else:
         home()
-
-    if not st.session_state.get('is_logged_in'):
-        signup()
+        if st.button("Disconnect"):
+            st.session_state['is_logged_in'] = False
 
 
 if __name__ == "__main__":
