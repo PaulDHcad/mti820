@@ -43,8 +43,8 @@ def login():
 
 def signup():
     st.subheader("Sign Up")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    username = st.text_input("Username", key="signup_username")
+    password = st.text_input("Password", type="password", key="signup_password")
     if st.button("Sign Up"):
         df = pd.read_csv(USER_CREDS_FILE)
         if username in df["Username"].values:
