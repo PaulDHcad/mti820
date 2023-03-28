@@ -30,7 +30,15 @@ default_page = 'Home'
 
 # Create a sidebar with the page options
 st.sidebar.title('Navigation')
-selected_page = st.sidebar.radio('Go to', list(pages.keys()), index=list(pages.keys()).index(default_page))
+for page_name in pages.keys():
+    if page_name == default_page:
+        st.sidebar.write(f'**{page_name}**')
+    else:
+        st.sidebar.write(f'[{page_name}](#{page_name.lower().replace(" ", "-")})')
 
 # Display the selected page
+selected_page = st.sidebar.selectbox('', list(pages.keys()), index=list(pages.keys()).index(default_page))
+st.sidebar.write('---')
+st.sidebar.write(f'You are currently on the **{selected_page}** page.')
+
 pages[selected_page]()
