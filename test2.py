@@ -1,6 +1,4 @@
 import streamlit as st
-from streamlit_tags import st_tags
-from streamlit_ace import st_ace
 
 def home():
     st.title('Home Page')
@@ -9,21 +7,16 @@ def home():
 
 def editor():
     st.title('Editor Page')
-    code = st_ace(value='', language='python', height=300)
+    code = st.text_area('Enter some code:')
     st.write('You entered the following code:')
     st.code(code)
 
 def tags():
     st.title('Tags Page')
-    tags = st_tags(
-        label='Enter some tags:',
-        text='Press enter to add more',
-        value=['python', 'streamlit'],
-        suggestions=['data science', 'machine learning', 'visualization']
-    )
+    tags = st.text_input('Enter some tags (separated by commas):')
     st.write('You entered the following tags:')
-    for tag in tags:
-        st.write(tag)
+    for tag in tags.split(','):
+        st.write(tag.strip())
 
 # Define the pages dictionary
 pages = {
