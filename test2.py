@@ -2,63 +2,63 @@ import streamlit as st
 import pandas as pd
 import hashlib
 
-def login_page():
-    st.title("Sign-in / Log-in")
-    
-    if "user_credentials.csv" not in st.session_state:
-        st.session_state.user_credentials = pd.DataFrame(columns=["Username", "Password"])
+USER_CREDS_FILE = "user_credentials.csv"
+HASH_FUNCTION = hashlib.sha256
 
-    credentials = st.session_state.user_credentials.set_index("Username")["Password"].to_dict()
-    
-    if not credentials:
-        st.warning("User credentials file is missing or empty.")
-        st.session_state.user_credentials = pd.DataFrame(columns=["Username", "Password"])
-        return False
-    
-    login_form = st.form("login_form")
-    
-    with login_form:
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        submit = st.form_submit_button("Log in")
-        
-        if submit:
-            hashed_password = hashlib.sha256(password.encode()).hexdigest()
-            
-            if username in credentials and credentials[username] == hashed_password:
-                st.success("You have successfully logged in!")
-                return True
-            else:
-                st.error("Incorrect username or password.")
-    
-    signup_form = st.form("signup_form")
-    
-    with signup_form:
-        st.header("Create a new account")
-        new_username = st.text_input("Username")
-        new_password = st.text_input("Password", type="password")
-        submit = st.form_submit_button("Create account")
-        
-        if submit:
-            if new_username in credentials:
-                st.error("Username already exists.")
-            else:
-                hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
-                st.session_state.user_credentials = st.session_state.user_credentials.append({"Username": new_username, "Password": hashed_password}, ignore_index=True)
-                st.success("Account created successfully!")
-    
+def create_account_page():
+    st.header("Create New Account")
+    new_username = st.text_input("Username")
+    new_password = st.text_input("Password", type="password")
+    confirm_password = st.text_input("Confirm Password", type="password")
+    if new_password != confirm_password:
+        st.error("Error: Passwords do not match!")
+        return
+
+    # Hash the password and store the credentials
+    hashed_password = HASH_FUNCTION(new_password.encode()).hexdigest()
+    credentials = pd.read_csv(USER_CREDS_FILE, index_col="Username") if pd.read_csv(USER_CREDS_FILE, index_col="Username", error_bad_lines=False).empty == False else pd.DataFrame(columns=["Username", "Password"]).set_index("Username")
+    if new_username in credentials.index:
+        st.error("Error: Username already exists!")
+        return
+    credentials.loc[new_username] = [hashed_password]
+    credentials.to_csv(USER_CREDS_FILE)
+    st.success("Account created successfully!")
+    st.info("Please login to your new account.")
+
+def login_page():
+    st.header("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    credentials = pd.read_csv(USER_CREDS_FILE, index_col="Username") if pd.read_csv(USER_CREDS_FILE, index_col="Username", error_bad_lines=False).empty == False else pd.DataFrame(columns=["Username", "Password"]).set_index("Username")
+    if username in credentials.index:
+        hashed_password = HASH_FUNCTION(password.encode()).hexdigest()
+        if hashed_password == credentials.loc[username, "Password"]:
+            st.success("Login successful!")
+            return True
+        else:
+            st.error("Error: Incorrect password!")
+    elif username != "":
+        st.error("Error: Username not found!")
     return False
 
-
 def home_page():
-    st.title("Home Page")
-    st.write("Welcome to the Home Page!")
-
+    st.header("Welcome to the Home Page")
+    st.write("You are now logged in.")
+    st.write("This is your home page.")
 
 def main():
-    if not login_page():
-        return
+    st.set_page_config(page_title="Sign-In/Log-In", page_icon=":guardsman:", layout="wide")
+    st.title("Sign-In/Log-In")
+
+    # Create user credentials file if it doesn't exist
+    try:
+        pd.read_csv(USER_CREDS_FILE, index_col="Username")
+    except FileNotFoundError:
+        pd.DataFrame(columns=["Username", "Password"]).set_index("Username").to_csv(USER_CREDS_FILE)
     
+    if not login_page():
+        create_account_page()
+
     home_page()
 
 if __name__ == "__main__":
