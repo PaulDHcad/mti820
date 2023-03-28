@@ -50,16 +50,24 @@ def create_account_page(credentials):
                 df.to_csv("user_credentials.csv")
                 st.success("Account created successfully!")
                 st.info("Please log in to your new account.")
-
 def main():
-    if 'user_credentials.csv' not in os.listdir():
-        df = pd.DataFrame(columns=['Username', 'Password'])
-        df.to_csv('user_credentials.csv', index=False)
+    # Load user credentials from CSV file
+    try:
+        credentials_df = pd.read_csv("user_credentials.csv")
+        credentials = credentials_df.set_index("Username")["Password"].to_dict()
+    except FileNotFoundError:
+        st.error("Could not find user credentials file.")
+        return
+    except KeyError:
+        st.error("User credentials file is missing required columns.")
+        return
     
-    credentials = pd.read_csv("user_credentials.csv", index_col="Username").to_dict()["Password"]
-    
+    # Show login page
     if not login_page():
-        create_account_page(credentials)
+        return
+    
+    # Show create account page
+    create_account_page(credentials)
 
 if __name__ == '__main__':
     main()
