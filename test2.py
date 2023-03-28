@@ -1,71 +1,97 @@
-import streamlit as st
-import csv
+import os
 import hashlib
+import pandas as pd
+import streamlit as st
 
-def create_user_credentials_file():
-    with open('user_credentials.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(['email', 'hashed_password'])
 
-def read_user_credentials_file():
-    with open('user_credentials.csv', 'r') as f:
-        reader = csv.reader(f)
-        next(reader) # Skip the header row
-        return {row[0]: row[1] for row in reader}
+def hash_password(password):
+    """Hashes a password using SHA-256 algorithm."""
+    return hashlib.sha256(password.encode()).hexdigest()
 
-def write_user_credentials(email, password):
-    hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-    with open('user_credentials.csv', 'a') as f:
-        writer = csv.writer(f)
-        writer.writerow([email, hashed_password])
 
 def login_page():
-    st.title("Login")
-    email = st.text_input("Email")
+    """Displays the login page and handles user authentication."""
+    st.header("Login")
+
+    # Get username and password from user
+    username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-    if st.button("Log in"):
-        user_credentials = read_user_credentials_file()
-        if email in user_credentials and \
-                user_credentials[email] == hashlib.sha256(password.encode('utf-8')).hexdigest():
-            st.success("Logged in as {}".format(email))
+
+    # Load user credentials from CSV file
+    credentials = pd.read_csv(get_file_path())
+
+    # Check if username and hashed password match
+    if st.button("Login"):
+        hashed_password = hash_password(password)
+        if (credentials["username"] == username).any() and \
+           (credentials["password"] == hashed_password).any():
+            st.success("Logged in!")
             return True
         else:
-            st.error("Incorrect email or password")
+            st.error("Incorrect username or password.")
+
+    # Show "Create account" button
+    if st.button("Create account"):
+        create_account_page(credentials)
     return False
 
-def signup_page():
-    st.title("Sign Up")
-    email = st.text_input("Email")
+
+def create_account_page(credentials):
+    """Displays the create account page and handles account creation."""
+    st.header("Create account")
+
+    # Get username and password from user
+    username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-    confirm_password = st.text_input("Confirm Password", type="password")
-    if st.button("Sign Up"):
-        if password == confirm_password:
-            write_user_credentials(email, password)
-            st.success("Successfully created account for {}".format(email))
-            return True
-        else:
-            st.error("Passwords do not match")
-    return False
+    confirm_password = st.text_input("Confirm password", type="password")
+
+    # Check if passwords match
+    if password != confirm_password:
+        st.error("Passwords do not match.")
+        return
+
+    # Check if username already exists
+    if (credentials["username"] == username).any():
+        st.error("Username already exists.")
+        return
+
+    # Add new user to CSV file
+    hashed_password = hash_password(password)
+    new_user = pd.DataFrame({"username": [username], "password": [hashed_password]})
+    credentials = pd.concat([credentials, new_user])
+    credentials.to_csv(get_file_path(), index=False)
+
+    st.success("Account created!")
+    return
+
 
 def home_page():
-    st.title("Welcome")
-    st.write("You are now logged in.")
+    """Displays the home page for authenticated users."""
+    st.header("Home page")
+    st.write("Welcome to the home page.")
+
+
+def get_file_path():
+    """Returns the absolute path of the CSV file."""
+    file_name = "user_credentials.csv"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, file_name)
+    return file_path
+
 
 def main():
-    if 'user_credentials.csv' not in os.listdir():
-        create_user_credentials_file()
+    # Check if CSV file exists, otherwise create it
+    file_path = get_file_path()
+    if not os.path.isfile(file_path):
+        pd.DataFrame({"username": [], "password": []}).to_csv(file_path, index=False)
 
-    login = False
-    signup = False
+    # Check if user is logged in
+    if not login_page():
+        return
 
-    if st.sidebar.button("Log in"):
-        login = login_page()
+    # Show home page
+    home_page()
 
-    if st.sidebar.button("Sign Up"):
-        signup = signup_page()
-
-    if login or signup:
-        home_page()
 
 if __name__ == "__main__":
     main()
