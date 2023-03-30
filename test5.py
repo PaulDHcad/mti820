@@ -44,6 +44,9 @@ def app():
             else:
                 st.error('Please enter a username and password.')
 
+    # Add a separator between the two columns
+    st.sidebar.write('---')
+
     with col2:
         st.write('Log In')
         # Create input fields for existing username and password
