@@ -19,7 +19,7 @@ def app():
     st.title('Sign-up/Login Page')
 
     # Define the layout for the sign-up and login forms
-    col1, col2 = st.beta_columns(2)
+    col1, col2 = st.beta_columns([1, 1])
 
     with col1:
         st.write('Sign Up')
@@ -66,10 +66,7 @@ def app():
                 st.error('Please enter a username and password.')
 
     # Add a vertical line between the two columns
-    st.markdown('<style> .main {display: flex;}</style>', unsafe_allow_html=True)
-    st.markdown('<style> .block1 {flex: 1;margin-right: 0.5rem;border-right: 1px solid #ddd;padding-right: 1rem;}</style>', unsafe_allow_html=True)
-    st.markdown('<style> .block2 {flex: 1;margin-left: 0.5rem;padding-left: 1rem;}</style>', unsafe_allow_html=True)
-    st.markdown('<div class="main"><div class="block1"></div><div class="block2"></div></div>', unsafe_allow_html=True)
+    st.markdown('<style> .st-ae {border-right: 1px solid #ddd;padding-right: 1rem;}</style>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     app()
