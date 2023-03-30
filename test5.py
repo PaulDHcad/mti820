@@ -1,74 +1,57 @@
 import streamlit as st
 import csv
-import os
 
-def create_user_file():
-    """Creates the user file if it doesn't exist"""
-    if not os.path.exists("users.csv"):
-        with open("users.csv", "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(["username", "password"])
+# Create a function to read user credentials from the CSV file
+def read_user_data():
+    with open('user_credentials.csv', 'r') as f:
+        reader = csv.reader(f)
+        user_data = list(reader)
+    return user_data
 
-def add_user(username, password):
-    """Adds a new user to the user file"""
-    with open("users.csv", "a", newline="") as file:
-        writer = csv.writer(file)
+# Create a function to write user credentials to the CSV file
+def write_user_data(username, password):
+    with open('user_credentials.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
         writer.writerow([username, password])
 
-def check_user(username, password):
-    """Checks if the username and password exist in the user file"""
-    with open("users.csv", "r", newline="") as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if row[0] == username and row[1] == password:
-                return True
-    return False
+# Define the Streamlit app
+def app():
+    st.title('Sign-up/Login Page')
+    st.write('Enter your credentials below to sign up or log in.')
 
-def login():
-    """Displays the login form and handles the login logic"""
-    st.header("Login")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        if check_user(username, password):
-            st.success("Logged in!")
-            return True
+    # Create input fields for username and password
+    username = st.text_input('Username')
+    password = st.text_input('Password', type='password')
+
+    # Create a button to sign up or log in
+    if st.button('Sign Up'):
+        # Check if username and password fields are not empty
+        if username and password:
+            # Read existing user data from the CSV file
+            user_data = read_user_data()
+            # Check if the username already exists in the CSV file
+            usernames = [user[0] for user in user_data]
+            if username in usernames:
+                st.error('Username already exists. Please choose a different one.')
+            else:
+                # Write the new user credentials to the CSV file
+                write_user_data(username, password)
+                st.success('Successfully signed up. Please log in.')
         else:
-            st.error("Invalid username or password")
-    return False
-
-def signup():
-    """Displays the sign up form and handles the sign up logic"""
-    st.header("Sign Up")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    confirm_password = st.text_input("Confirm Password", type="password")
-    if st.button("Sign Up"):
-        if password == confirm_password:
-            add_user(username, password)
-            st.success("Account created!")
-            return True
+            st.error('Please enter a username and password.')
+    elif st.button('Log In'):
+        # Check if username and password fields are not empty
+        if username and password:
+            # Read existing user data from the CSV file
+            user_data = read_user_data()
+            # Check if the username and password match any of the credentials in the CSV file
+            for user in user_data:
+                if username == user[0] and password == user[1]:
+                    st.success('Successfully logged in.')
+                    return
+            st.error('Invalid username or password.')
         else:
-            st.error("Passwords do not match")
-    return False
+            st.error('Please enter a username and password.')
 
-def home():
-    """Displays the home page"""
-    st.header("Home")
-    st.write("Welcome to the home page!")
-
-def main():
-    """Main function"""
-    create_user_file()
-    st.set_page_config(page_title="Login/Sign Up Example")
-    st.title("Login/Sign Up Example")
-    col1, col2 = st.beta_columns(2)
-    if login():
-        home()
-    elif signup():
-        login()
-    else:
-        home()
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app()
