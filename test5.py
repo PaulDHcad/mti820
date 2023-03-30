@@ -1,82 +1,74 @@
 import streamlit as st
-import pandas as pd
+import csv
 import os
 
-# Set up page layout
-st.set_page_config(page_title="Login/Sign up", page_icon=":guardsman:", layout="wide")
+def create_user_file():
+    """Creates the user file if it doesn't exist"""
+    if not os.path.exists("users.csv"):
+        with open("users.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["username", "password"])
 
-# Define login function
-def login(df, username, password):
-    # Check if username exists in dataframe
-    if username not in df['Username'].tolist():
-        st.error("Invalid username")
-        return False
-    # Check if password matches for given username
-    if df.loc[df['Username'] == username, 'Password'].iloc[0] != password:
-        st.error("Incorrect password")
-        return False
-    st.success("Logged in successfully!")
-    return True
+def add_user(username, password):
+    """Adds a new user to the user file"""
+    with open("users.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([username, password])
 
-# Define sign up function
-def sign_up(df, username, password):
-    # Check if username already exists in dataframe
-    if username in df['Username'].tolist():
-        st.error("Username already exists")
-        return False
-    # Add new user to dataframe
-    new_user = pd.DataFrame({'Username': [username], 'Password': [password]})
-    df = pd.concat([df, new_user], ignore_index=True)
-    df.to_csv('user_credentials.csv', index=False)
-    st.success("Signed up successfully!")
-    return True
+def check_user(username, password):
+    """Checks if the username and password exist in the user file"""
+    with open("users.csv", "r", newline="") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[0] == username and row[1] == password:
+                return True
+    return False
 
-# Define main function
+def login():
+    """Displays the login form and handles the login logic"""
+    st.header("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if check_user(username, password):
+            st.success("Logged in!")
+            return True
+        else:
+            st.error("Invalid username or password")
+    return False
+
+def signup():
+    """Displays the sign up form and handles the sign up logic"""
+    st.header("Sign Up")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    confirm_password = st.text_input("Confirm Password", type="password")
+    if st.button("Sign Up"):
+        if password == confirm_password:
+            add_user(username, password)
+            st.success("Account created!")
+            return True
+        else:
+            st.error("Passwords do not match")
+    return False
+
+def home():
+    """Displays the home page"""
+    st.header("Home")
+    st.write("Welcome to the home page!")
+
 def main():
-    # Create user credentials CSV file if it doesn't exist
-    if not os.path.exists('user_credentials.csv'):
-        pd.DataFrame({'Username': [], 'Password': []}).to_csv('user_credentials.csv', index=False)
-
-    # Load user credentials CSV file into dataframe
-    df = pd.read_csv('user_credentials.csv')
-
-    # Define login and sign up form inputs
-    with st.sidebar:
-        st.title("Login")
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-        login_button = st.button("Log in")
-        
-        st.title("Sign up")
-        new_username = st.text_input("New username")
-        new_password = st.text_input("New password", type="password")
-        sign_up_button = st.button("Sign up")
-
-    # Handle login and sign up form submissions
-    if login_button:
-        if login(df, username, password):
-            st.experimental_rerun()
-    if sign_up_button:
-        if sign_up(df, new_username, new_password):
-            st.experimental_rerun()
-
-    # Hide login and sign up form and show home page if user is logged in
-    if 'logged_in' not in st.session_state:
-        st.title("Home page")
-        st.write("Welcome to the home page! Please log in or sign up to continue.")
+    """Main function"""
+    create_user_file()
+    st.set_page_config(page_title="Login/Sign Up Example")
+    st.title("Login/Sign Up Example")
+    col1, col2 = st.beta_columns(2)
+    if login():
+        home()
+    elif signup():
+        login()
     else:
-        st.title("Logged in as: " + st.session_state['logged_in'])
-        st.write("This is the home page for logged in users.")
+        home()
 
-        # Add logout button
-        logout_button = st.button("Log out")
-        if logout_button:
-            st.session_state.pop('logged_in')
-            st.experimental_rerun()
-
-    # Set logged_in session state variable if user successfully logs in
-    if login_button and login(df, username, password):
-        st.session_state['logged_in'] = username
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
