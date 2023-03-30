@@ -19,7 +19,7 @@ def app():
     st.title('Sign-up/Login Page')
 
     # Define the layout for the sign-up and login forms
-    col1, col2 = st.beta_columns([1, 1])
+    col1, _, col2 = st.beta_columns([1, 0.05, 1])
 
     with col1:
         st.write('Sign Up')
@@ -66,7 +66,7 @@ def app():
                 st.error('Please enter a username and password.')
 
     # Add a vertical line between the two columns
-    st.markdown('<style> .st-ae {border-right: 1px solid #ddd;padding-right: 1rem;}</style>', unsafe_allow_html=True)
+    st.markdown('<style> .css-1lksz7v {border-left: 1px solid #ddd;padding-left: 1rem;}</style>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     app()
