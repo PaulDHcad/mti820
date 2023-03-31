@@ -1,69 +1,84 @@
 import streamlit as st
+import csv
 
-def signup_page():
-    st.title("Sign Up")
+# Create a function to read user credentials from the CSV file
+def read_user_data():
+    with open('user_credentials.csv', 'r') as f:
+        reader = csv.reader(f)
+        user_data = list(reader)
+    return user_data
 
-    # Get user information
-    name = st.text_input("Name")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-    confirm_password = st.text_input("Confirm Password", type="password")
+# Create a function to write user credentials to the CSV file
+def write_user_data(username, password):
+    with open('user_credentials.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([username, password])
 
-    # Check if passwords match
-    if password != confirm_password:
-        st.error("Passwords do not match!")
-        return
+# Define the Streamlit app
+def app():
+    st.title('Sign-up/Login Page')
 
-    # Check if user already exists
-    with open("users.csv", "r") as f:
-        for line in f:
-            if email in line:
-                st.error("User already exists!")
-                return
+    # Define the layout for the sign-up and login forms
+    col1, col2, col3 = st.beta_columns([1, 0.1, 1])
 
-    # Add new user to csv file
-    with open("users.csv", "a") as f:
-        f.write(f"{name},{email},{password}\n")
+    # Get the login status from the session state
+    login_status = st.session_state.get('login_status', False)
 
-    st.success("User created!")
+    if not login_status:
+        # Show the sign-up form
+        with col1:
+            st.write('Sign Up')
+            # Create input fields for new username and password
+            new_username = st.text_input('New Username')
+            new_password = st.text_input('New Password', type='password')
 
-def login_page():
-    st.title("Log In")
+            # Create a button to sign up
+            if st.button('Sign Up'):
+                # Check if username and password fields are not empty
+                if new_username and new_password:
+                    # Read existing user data from the CSV file
+                    user_data = read_user_data()
+                    # Check if the username already exists in the CSV file
+                    usernames = [user[0] for user in user_data]
+                    if new_username in usernames:
+                        st.error('Username already exists. Please choose a different one.')
+                    else:
+                        # Write the new user credentials to the CSV file
+                        write_user_data(new_username, new_password)
+                        st.success('Successfully signed up. Please log in.')
+                else:
+                    st.error('Please enter a username and password.')
 
-    # Get user information
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+        with col2:
+            # Add a vertical bar between the two columns
+            st.markdown('<hr style="border: none; border-left: 1px solid #ccc; height: 800px;">', unsafe_allow_html=True)
 
-    # Check if user exists
-    with open("users.csv", "r") as f:
-        found = False
-        for line in f:
-            data = line.strip().split(",")
-            if email == data[1] and password == data[2]:
-                found = True
-                break
+        # Show the login form
+        with col3:
+            st.write('Log In')
+            # Create input fields for existing username and password
+            existing_username = st.text_input('Existing Username')
+            existing_password = st.text_input('Existing Password', type='password')
 
-    if found:
-        st.success("Logged in!")
-        st.write("Welcome to your Home Page")
+            # Create a button to log in
+            if st.button('Log In'):
+                # Check if username and password fields are not empty
+                if existing_username and existing_password:
+                    # Read existing user data from the CSV file
+                    user_data = read_user_data()
+                    # Check if the username and password match any of the credentials in the CSV file
+                    for user in user_data:
+                        if existing_username == user[0] and existing_password == user[1]:
+                            st.success('Successfully logged in.')
+                            # Set the login status in the session state
+                            st.session_state.login_status = True
+                            return
+                    st.error('Invalid username or password.')
+                else:
+                    st.error('Please enter a username and password.')
     else:
-        st.error("Invalid email or password")
-
-def main():
-    st.set_page_config(page_title="Sign Up / Log In Page")
-    st.write("<style>div.row-widget.stRadio > div{flex-direction:row;}</style>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([2, 0.2, 2])
-    with col1:
-        signup_page()
-    with col2:
-        st.write("")
-        st.write("")
-        st.write("-- OR --")
-        st.write("")
-        st.write("")
-    with col3:
-        login_page()
-
-if __name__ == "__main__":
-    main()
+        # Hide the sign-up form and show a message that the user is already logged in
+        with col1:
+            st.write('You are already logged in.')
+        with col2:
+            st.markdown('<hr style="border: none; border-left: 1px solid #ccc; height: 
