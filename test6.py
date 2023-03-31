@@ -1,11 +1,8 @@
 import streamlit as st
 
 def app():
-    st.set_page_config(page_title="Welcome", page_icon=":guardsman:", layout="wide")
+    st.set_page_config(page_title="My App")
 
-    # Display the button
-    button_pressed = st.button("Click me to start")
-
-    # If the button is pressed, display the welcome message
-    if button_pressed:
-        st.write("Welcome to my Streamlit app!")
+    button_clicked = st.button("Click me to start!")
+    if button_clicked:
+        st.write("Welcome to my app!")
