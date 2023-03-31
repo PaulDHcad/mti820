@@ -81,4 +81,5 @@ def app():
         with col1:
             st.write('You are already logged in.')
         with col2:
-            st.markdown('<hr style="border: none; border-left: 1px solid #ccc; height: 
+            st.markdown('<hr style="border: none; border-left: 1px solid #ccc; height: 800px;">', unsafe_allow_html=True)
+
