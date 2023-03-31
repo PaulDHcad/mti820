@@ -80,3 +80,6 @@ def app():
     if logged_in:
         st.write('Welcome to the Home Page!')
         st.write('Here, you can access all the features of our app.') 
+        
+if __name__ == '__main__':
+    app()
