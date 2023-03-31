@@ -1,48 +1,69 @@
-import csv
 import streamlit as st
 
 def signup_page():
-    st.header("Sign Up")
-    username = st.text_input("Username", key="signup_username")
-    password = st.text_input("Password", type="password", key="signup_password")
-    if st.button("Sign Up"):
-        with open("users.csv", "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([username, password])
-        st.success("You have successfully created an account!")
+    st.title("Sign Up")
+
+    # Get user information
+    name = st.text_input("Name")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    confirm_password = st.text_input("Confirm Password", type="password")
+
+    # Check if passwords match
+    if password != confirm_password:
+        st.error("Passwords do not match!")
+        return
+
+    # Check if user already exists
+    with open("users.csv", "r") as f:
+        for line in f:
+            if email in line:
+                st.error("User already exists!")
+                return
+
+    # Add new user to csv file
+    with open("users.csv", "a") as f:
+        f.write(f"{name},{email},{password}\n")
+
+    st.success("User created!")
 
 def login_page():
-    st.header("Log In")
-    username = st.text_input("Username", key="login_username")
-    password = st.text_input("Password", type="password", key="login_password")
-    if st.button("Log In"):
-        with open("users.csv", "r") as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row[0] == username and row[1] == password:
-                    st.success("You have successfully logged in!")
-                    return True
-        st.warning("Incorrect username or password.")
-    return False
+    st.title("Log In")
+
+    # Get user information
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    # Check if user exists
+    with open("users.csv", "r") as f:
+        found = False
+        for line in f:
+            data = line.strip().split(",")
+            if email == data[1] and password == data[2]:
+                found = True
+                break
+
+    if found:
+        st.success("Logged in!")
+        st.write("Welcome to your Home Page")
+    else:
+        st.error("Invalid email or password")
 
 def main():
-    st.set_page_config(page_title="My App", page_icon=":guardsman:", layout="wide")
-    col1, col2, col3 = st.beta_columns([1, 0.1, 1])
+    st.set_page_config(page_title="Sign Up / Log In Page")
+    st.write("<style>div.row-widget.stRadio > div{flex-direction:row;}</style>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([2, 0.2, 2])
     with col1:
-        if not login_page():
-            signup_page()
+        signup_page()
     with col2:
         st.write("")
-        st.write("---OR---")
+        st.write("")
+        st.write("-- OR --")
+        st.write("")
         st.write("")
     with col3:
-        if not login_page():
-            signup_page()
-
-    if login_page():
-        st.write("")
-        st.write("---Home Page---")
-        # Add your home page content here
+        login_page()
 
 if __name__ == "__main__":
     main()
