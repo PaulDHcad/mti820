@@ -16,7 +16,7 @@ def write_user_data(username, password):
 
 # Define the Streamlit app
 def app():
-    st.set_page_config(page_title="Sign-up/Login Page", page_icon=":guardsman:", layout="wide")
+    st.title('Sign-up/Login Page')
 
     # Define the layout for the sign-up and login forms
     col1, col2, col3 = st.beta_columns([1, 0.1, 1])
@@ -64,16 +64,10 @@ def app():
                 for user in user_data:
                     if existing_username == user[0] and existing_password == user[1]:
                         st.success('Successfully logged in.')
-                        # Clear input fields
-                        existing_username = ""
-                        existing_password = ""
-                        break
-                else:
-                    st.error('Invalid username or password.')
+                        return
+                st.error('Invalid username or password.')
             else:
                 st.error('Please enter a username and password.')
 
-    # Show the home page if user is logged in
-    if existing_username:
-        st.write('Welcome to the home page!')
-        # You can add your own content here
+if __name__ == '__main__':
+    app()
