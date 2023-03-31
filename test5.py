@@ -77,4 +77,6 @@ def app():
                     st.error('Please enter a username and password.')
 
     # Display the home page if the user has logged in
-    if logged_in
+    if logged_in:
+        st.write('Welcome to the Home Page!')
+        st.write('Here, you can access all the features of our app.') 
