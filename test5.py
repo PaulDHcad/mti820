@@ -1,5 +1,8 @@
 import streamlit as st
 import csv
+from streamlit.report_thread import get_report_ctx
+from streamlit.hashing import _CodeHasher
+import SessionState
 
 # Create a function to read user credentials from the CSV file
 def read_user_data():
@@ -16,10 +19,11 @@ def write_user_data(username, password):
 
 # Define the Streamlit app
 def app():
-    st.title('Sign-up/Login Page')
+    st.set_page_config(page_title="Sign-up/Login Page")
 
     # Define the layout for the sign-up and login forms
     col1, col2, col3 = st.beta_columns([1, 0.1, 1])
+    session = SessionState.get(user_name='', signed_in=False)
 
     with col1:
         st.write('Sign Up')
@@ -64,10 +68,16 @@ def app():
                 for user in user_data:
                     if existing_username == user[0] and existing_password == user[1]:
                         st.success('Successfully logged in.')
-                        return
-                st.error('Invalid username or password.')
+                        session.user_name = existing_username
+                        session.signed_in = True
+                        break
+                if not session.signed_in:
+                    st.error('Invalid username or password.')
             else:
                 st.error('Please enter a username and password.')
-
-if __name__ == '__main__':
-    app()
+    
+    # Display home page after user has logged in
+    if session.signed_in:
+        st.write(f"Welcome {session.user_name}!")
+        st.write("You are now logged in.")
+        st.write
