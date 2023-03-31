@@ -1,8 +1,12 @@
 import streamlit as st
 
 def app():
-    st.set_page_config(page_title="My App")
+    st.set_page_config(page_title="Home Page")
 
-    button_clicked = st.button("Click me to start!")
-    if button_clicked:
-        st.write("Welcome to my app!")
+    if not st.session_state.get('button_clicked', False):
+        if st.button('Click me'):
+            st.session_state['button_clicked'] = True
+
+    if st.session_state.get('button_clicked', False):
+        st.write('Welcome to the home page!')
+        # You can add your own content here
