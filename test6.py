@@ -1,12 +1,13 @@
 import streamlit as st
 
+# Define the Streamlit app
 def app():
-    st.set_page_config(page_title="Home Page")
+    st.set_page_config(page_title="Button Example")
 
-    if not st.session_state.get('button_clicked', False):
-        if st.button('Click me'):
-            st.session_state['button_clicked'] = True
+    # Create a button
+    button_clicked = st.button("Click me!")
 
-    if st.session_state.get('button_clicked', False):
-        st.write('Welcome to the home page!')
-        # You can add your own content here
+    # Check if the button has been clicked
+    if button_clicked:
+        # Display a message
+        st.write("Button clicked!")
