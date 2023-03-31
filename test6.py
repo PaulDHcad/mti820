@@ -1,10 +1,22 @@
 import streamlit as st
+import csv
 
+# Create a function to read user credentials from the CSV file
+def read_user_data():
+    with open('user_credentials.csv', 'r') as f:
+        reader = csv.reader(f)
+        user_data = list(reader)
+    return user_data
+
+# Create a function to write user credentials to the CSV file
+def write_user_data(username, password):
+    with open('user_credentials.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([username, password])
+
+# Define the Streamlit app
 def app():
     st.set_page_config(page_title="Sign-up/Login Page", page_icon=":guardsman:", layout="wide")
-
-    # Create a boolean variable to keep track of login status
-    logged_in = False
 
     # Define the layout for the sign-up and login forms
     col1, col2, col3 = st.beta_columns([1, 0.1, 1])
@@ -19,12 +31,18 @@ def app():
         if st.button('Sign Up'):
             # Check if username and password fields are not empty
             if new_username and new_password:
-                # Write the new user credentials to a text file
-                with open('user_credentials.txt', 'a') as f:
-                    f.write(f"{new_username},{new_password}\n")
-                st.success('Successfully signed up. Please log in.')
-            else:
-                st.error('Please enter a username and password.')
+                # Read existing user data from the CSV file
+                user_data = read_user_data()
+                # Check if the username already exists in the CSV file
+                usernames = [user[0] for user in user_data]
+                if new_username in usernames:
+                    st.error('Username already exists. Please choose a different one.')
+                else:
+                    # Write the new user credentials to the CSV file
+                    write_user_data(new_username, new_password)
+                    st.success('Successfully signed up. Please log in.')
+                    new_username = ""
+                    new_password = ""
 
     with col2:
         # Add a vertical bar between the two columns
@@ -40,26 +58,22 @@ def app():
         if st.button('Log In'):
             # Check if username and password fields are not empty
             if existing_username and existing_password:
-                # Read existing user data from the text file
-                with open('user_credentials.txt', 'r') as f:
-                    user_data = f.read().split('\n')
-                # Check if the username and password match any of the credentials in the text file
+                # Read existing user data from the CSV file
+                user_data = read_user_data()
+                # Check if the username and password match any of the credentials in the CSV file
                 for user in user_data:
-                    if user:
-                        username, password = user.split(',')
-                        if existing_username == username and existing_password == password:
-                            st.success('Successfully logged in.')
-                            logged_in = True
-                            # Clear input fields
-                            existing_username = ""
-                            existing_password = ""
-                            break
+                    if existing_username == user[0] and existing_password == user[1]:
+                        st.success('Successfully logged in.')
+                        # Clear input fields
+                        existing_username = ""
+                        existing_password = ""
+                        break
                 else:
                     st.error('Invalid username or password.')
             else:
                 st.error('Please enter a username and password.')
-    
+
     # Show the home page if user is logged in
-    if logged_in:
+    if existing_username:
         st.write('Welcome to the home page!')
         # You can add your own content here
