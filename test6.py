@@ -1,18 +1,40 @@
 import streamlit as st
 
+# Define function for login page
+def login():
+    st.title("Login Page")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        # Check if username and password are correct
+        if username == "myuser" and password == "mypassword":
+            st.success("Login successful!")
+            # Redirect to home page
+            return "home"
+        else:
+            st.error("Invalid username or password")
+
+# Define function for home page
 def home():
+    st.title("Home Page")
     st.write("Welcome to the home page!")
-    # You can add your own content here
+    st.write("This is a sample app with multiple pages.")
 
-def app():
-    st.set_page_config(page_title="My Streamlit App")
+# Define dictionary of pages
+pages = {
+    "login": login,
+    "home": home,
+}
 
-    # Create a button to show the home page
-    if st.button("Show Home Page"):
-        home()
+# Set initial page to login
+current_page = "login"
 
-    # Show the initial button if the home page is not displayed yet
-    if not st.session_state.get("home_displayed", False):
-        st.write("Press the button below to show the home page")
-    else:
-        st.session_state.home_displayed = True
+# Loop until user logs in
+while current_page == "login":
+    # Run current page function
+    current_page_func = pages[current_page]
+    current_page = current_page_func()
+
+# Once user logs in, show home page
+if current_page == "home":
+    home()
